@@ -1,0 +1,111 @@
+<resources>
+
+    <string name="app.shortName">MFinance</string>
+    <string name="app.fullName">Market Finance</string>
+    <string name="app.EULA">By using Market Finance, you agree to the <a href="https://marketfinance.app/eula">EULA</a> and <a href="https://marketfinance.app/">Privacy Policy</a></string>
+
+    <string name="default.paperTrade">Paper Trade</string>
+    <string name="default.encryptionMessage">Your data is encrypted locally and is never sent to our servers.</string>
+    <string name="default.symbol">SYMBOL</string>
+    <string name="default.name">NAME</string>
+    <string name="default.na">N/A</string>
+    <string name="default.details">NAME • TYPE</string>
+    <string name="default.price">$0.00</string>
+    <string name="default.double">0.00</string>
+    <string name="default.percentage">0%</string>
+    <string name="default.doublePercentage">0.00%</string>
+    <string name="default.change">$0.00 (0.00%)</string>
+    <string name="default.bidAsk">$0.00 x 0</string>
+    <string name="default.range">$0.00 - $0.00</string>
+    <string name="default.manage">Manage</string>
+    <string name="default.continue">Continue</string>
+    <string name="default.error.exception">An Exception Occurred.</string>
+    <string name="default.error.server">Server Error</string>
+    <string name="default.error.connection">Connection Error</string>
+    <string name="default.quickStatistics">Quick Statistics</string>
+    <string name="default.buy">Buy</string>
+    <string name="default.sell">Sell</string>
+    <string name="default.readMore">Read More</string>
+    <string name="default.swipeToConfirm">Swipe to Confirm</string>
+
+    <string name="splash.newInstall">New Install Detected…</string>
+
+    <string name="menu.bottomNavigationView.dashboardTitle">Dashboard</string>
+    <string name="menu.bottomNavigationView.searchTitle">Search</string>
+    <string name="menu.bottomNavigationView.ordersTitle">Order</string>
+
+    <string name="alertOnboarding.title">Create a Portfolio Environment</string>
+    <string name="alertOnboarding.portfolioString.header">Portfolio Name</string>
+    <string name="alertOnboarding.portfolioString.description">A unique name for your portfolio. Duplicate names will not work.</string>
+    <string name="alertOnboarding.initialBuyingPower.header">Initial Buying Power</string>
+    <string name="alertOnboarding.initialBuyingPower.description">The amount of money that is initially in the portfolio. We recommend setting it between 10K-25K.</string>
+
+    <string name="recyclerView.news.null.title">No News Available</string>
+    <string name="recyclerView.news.null.description">No description available</string>
+    <string name="recyclerView.news.null.timeStamp">Today</string>
+
+    <string name="dashboard.investing.paperTrade.portfolio">Portfolio: %1$s</string>
+    <string name="dashboard.investing.marketStatus">Market Status</string>
+    <string name="dashboard.portfolio.header">Portfolio</string>
+    <string name="dashboard.settings.header">User Settings</string>
+
+    <string name="search.searchView.hint">Search for symbols, or companies…</string>
+    <string name="search.error.emptyQuery">Empty Query</string>
+    <string name="search.error.noResults">No Results Found</string>
+
+    <string name="advancedStock.timeRangeSelector.ONE_DAY">1D</string>
+    <string name="advancedStock.timeRangeSelector.FIVE_DAY">5D</string>
+    <string name="advancedStock.timeRangeSelector.ONE_MONTH">1M</string>
+    <string name="advancedStock.timeRangeSelector.THREE_MONTH">3M</string>
+    <string name="advancedStock.timeRangeSelector.ONE_YEAR">1Y</string>
+    <string name="advancedStock.quickStatistics.chartHigh">Chart High</string>
+    <string name="advancedStock.quickStatistics.chartLow">Chart Low</string>
+    <string name="advancedStock.quickStatistics.bid">Bid</string>
+    <string name="advancedStock.quickStatistics.ask">Ask</string>
+    <string name="advancedStock.quickStatistics.previousClose">Previous Close</string>
+    <string name="advancedStock.quickStatistics.volume">Volume</string>
+    <string name="advancedStock.quickStatistics.peRatio">P/E Ratio (TTM)</string>
+    <string name="advancedStock.quickStatistics.dividend">Dividend</string>
+    <string name="advancedStock.quickStatistics.eps">EPS (TTM)</string>
+    <string name="advancedStock.quickStatistics.oneYearTargetEst">1Y Target Est.</string>
+    <string name="advancedStock.quickStatistics.expand">Expand</string>
+    <string name="advancedStock.trade.header">Trade</string>
+    <string name="advancedStock.trade.units">Units</string>
+    <string name="advancedStock.trade.totalValue">Total Value</string>
+    <string name="advancedStock.trade.averageCost">Average Cost</string>
+    <string name="advancedStock.trade.portfolioMakeup">Portfolio Makeup</string>
+    <string name="advancedStock.trade.todayUnrealizedReturn">Today\'s Unrealized Return</string>
+    <string name="advancedStock.trade.todayRealizedReturn">Today\'s Realized Return</string>
+    <string name="advancedStock.trade.totalUnrealizedReturn">Total Unrealized Return</string>
+    <string name="advancedStock.trade.totalRealizedReturn">Total Realized Return</string>
+    <string name="advancedStock.analystRatings.header">Analyst Ratings</string>
+    <string name="advancedStock.analystRatings.rating">Rating</string>
+    <string name="advancedStock.analystRatings.totalRatings">0 total ratings</string>
+    <string name="advancedStock.analystRatings.hold">Hold</string>
+    <string name="advancedStock.news.header">News</string>
+    <string name="advancedStock.earnings.header">Earnings</string>
+    <string name="advancedStock.earnings.date">0000–01–01</string>
+    <string name="advancedStock.about.header">About</string>
+
+    <string name="purchase.header.details">SYMBOL • $0.00</string>
+    <string name="purchase.marketOrder.abbreviation">MO</string>
+    <string name="purchase.marketOrder.header">Market Order</string>
+    <string name="purchase.marketOrder.description">Market orders execute a trade immediately at the best available bid or ask.</string>
+    <string name="purchase.limitOrder.abbreviation">LO</string>
+    <string name="purchase.limitOrder.header">Limit Order</string>
+    <string name="purchase.limitOrder.description">Limit orders can execute a trade when the price meets it\'s threshold. A limit order is not guaranteed to execute</string>
+
+    <string name="marketOrder.unitsToPurchase">Units to Purchase</string>
+    <string name="marketOrder.currentUnits">You currently have %1$s units of %2$s</string>
+    <string name="marketOrder.quickStatistics.currentBid.header">Current Bid</string>
+    <string name="marketOrder.quickStatistics.currentAsk.header">Current Ask</string>
+    <string name="marketOrder.quickStatistics.oneDayRange">One Day Range</string>
+    <string name="marketOrder.quickStatistics.fiftyTwoWeekRange">52 Week Range</string>
+
+    <string name="error.fatalException">A Fatal Exception Occurred.</string>
+    <string name="error.noReasonProvided">No reason provided.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

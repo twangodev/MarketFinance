@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/alertOnboarding.constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/alertOnboarding.title.textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto_condensed"
+        android:gravity="center"
+        android:text="@string/alertOnboarding.title"
+        android:textColor="@color/theme.colorOnPrimary"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/alertOnboarding.portfolioName.header.textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_condensed"
+        android:text="@string/alertOnboarding.portfolioString.header"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/alertOnboarding.initialBuyingPower.currencyEditText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alertOnboarding.title.textView" />
+
+    <TextView
+        android:id="@+id/alertOnboarding.portfolioName.description.textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto_condensed"
+        android:text="@string/alertOnboarding.portfolioString.description"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/alertOnboarding.initialBuyingPower.header.textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alertOnboarding.portfolioName.header.textView"
+        tools:ignore="SmallSp" />
+
+    <EditText
+        android:id="@+id/alertOnboarding.portfolioName.editText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:autofillHints="Default Portfolio"
+        android:backgroundTint="@color/stock.positive"
+        android:fontFamily="@font/roboto_condensed"
+        android:gravity="center_horizontal|end"
+        android:inputType="text|textCapWords"
+        android:maxLength="15"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/alertOnboarding.portfolioName.description.textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/alertOnboarding.initialBuyingPower.header.textView"
+        app:layout_constraintTop_toBottomOf="@+id/alertOnboarding.title.textView" />
+
+    <TextView
+        android:id="@+id/alertOnboarding.initialBuyingPower.header.textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_condensed"
+        android:text="@string/alertOnboarding.initialBuyingPower.header"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/alertOnboarding.initialBuyingPower.currencyEditText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alertOnboarding.portfolioName.description.textView" />
+
+    <TextView
+        android:id="@+id/alertOnboarding.initialBuyingPower.description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto_condensed"
+        android:text="@string/alertOnboarding.initialBuyingPower.description"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/alertOnboarding.initialBuyingPower.header.textView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alertOnboarding.initialBuyingPower.header.textView"
+        tools:ignore="SmallSp" />
+
+    <me.abhinay.input.CurrencyEditText
+        android:id="@+id/alertOnboarding.initialBuyingPower.currencyEditText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/stock.positive"
+        android:fontFamily="@font/roboto_condensed"
+        android:gravity="center_horizontal|end"
+        android:inputType="numberDecimal"
+        android:maxLength="15"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/alertOnboarding.initialBuyingPower.description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/alertOnboarding.initialBuyingPower.header.textView"
+        app:layout_constraintTop_toBottomOf="@+id/alertOnboarding.portfolioName.editText" />
+
+    <CheckBox
+        android:id="@+id/alertOnboarding.eula.checkBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:buttonTint="@color/stock.positive"
+        android:checked="true"
+        android:fontFamily="@font/roboto_condensed"
+        android:gravity="center"
+        android:text="@string/app.EULA"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alertOnboarding.initialBuyingPower.description" />
+
+    <LinearLayout
+        android:id="@+id/alertOnboarding.encryptionMessage.linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginTop="16dp"
+        android:alpha="0.7"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alertOnboarding.eula.checkBox">
+
+        <ImageView
+            android:id="@+id/alertOnboarding.encryptedMessage.imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_round_https_24" />
+
+        <TextView
+            android:id="@+id/onboarding.encryptionMessage.textView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_condensed"
+            android:gravity="center"
+            android:text="@string/default.encryptionMessage"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

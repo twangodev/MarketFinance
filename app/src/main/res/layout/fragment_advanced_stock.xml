@@ -1,0 +1,1300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/advancedStockFragment.parent.constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.advancedStockFragment.AdvancedStockFragment">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/advancedStockFragment.swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ScrollView
+            android:id="@+id/advancedStockFragment.scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/advancedStockFragment.constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/advancedStockFragment.symbol.textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/roboto_condensed"
+                    android:text="@string/default.symbol"
+                    android:textColor="@color/theme.colorOnPrimary"
+                    android:textSize="30sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/advancedStockFragment.details.textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:fontFamily="@font/roboto_condensed"
+                    android:text="@string/default.name"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.symbol.textView" />
+
+                <com.robinhood.ticker.TickerView
+                    android:id="@+id/advancedStockFragment.price.tickerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/default.price"
+                    android:textColor="@color/stock.offline"
+                    android:textSize="30sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/advancedStockFragment.change.imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    app:srcCompat="@drawable/ic_round_trending_flat_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/advancedStockFragment.change.tickerView"
+                    app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.change.tickerView"
+                    app:layout_constraintTop_toTopOf="@+id/advancedStockFragment.change.tickerView" />
+
+                <com.robinhood.ticker.TickerView
+                    android:id="@+id/advancedStockFragment.change.tickerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/default.change"
+                    android:textColor="@color/stock.offline"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.price.tickerView" />
+
+                <com.robinhood.spark.SparkView
+                    android:id="@+id/advancedStockFragment.chart.sparkView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.details.textView"
+                    app:spark_lineColor="@color/stock.offline"
+                    app:spark_lineWidth="1.5dp"
+                    app:spark_scrubEnabled="true"
+                    app:spark_scrubLineColor="@color/theme.colorOnPrimary" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/advancedStockFragment.timeRangeSelector.constraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.chart.sparkView">
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.timeRangeSelector.1D.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_stock_offline"
+                        android:fontFamily="@font/roboto_condensed"
+                        android:gravity="center"
+                        android:text="@string/advancedStock.timeRangeSelector.ONE_DAY"
+                        android:textColor="@color/theme.colorPrimary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.timeRangeSelector.5D.textView"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.timeRangeSelector.5D.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/advancedStock.timeRangeSelector.FIVE_DAY"
+                        android:textColor="@color/stock.offline"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.timeRangeSelector.1M.textView"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.timeRangeSelector.1D.textView"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.timeRangeSelector.1M.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/advancedStock.timeRangeSelector.ONE_MONTH"
+                        android:textColor="@color/stock.offline"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.timeRangeSelector.3M.textView"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.timeRangeSelector.5D.textView"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.timeRangeSelector.3M.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/advancedStock.timeRangeSelector.THREE_MONTH"
+                        android:textColor="@color/stock.offline"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.timeRangeSelector.1Y.textView"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.timeRangeSelector.1M.textView"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.timeRangeSelector.1Y.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/advancedStock.timeRangeSelector.ONE_YEAR"
+                        android:textColor="@color/stock.offline"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.chartSelector.imageView"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.timeRangeSelector.3M.textView"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/advancedStockFragment.chartSelector.imageView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_round_waterfall_chart_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.timeRangeSelector.1Y.textView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/stock.offline" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/advancedStockFragment.trade.constraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.timeRangeSelector.constraintLayout">
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.trade.header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/roboto_condensed"
+                        android:text="@string/advancedStock.trade.header"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/advancedStockFragment.trade.info.imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="8dp"
+                        app:srcCompat="@drawable/ic_round_info_24"
+                        app:layout_constraintBottom_toBottomOf="@+id/advancedStockFragment.trade.header"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.trade.header"
+                        app:layout_constraintTop_toTopOf="@+id/advancedStockFragment.trade.header" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/advancedStockFragment.trade.sell.constraintLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/rounded_stroke_offline"
+                        app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.trade.buy.constraintLayout"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.header">
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.trade.sell.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:gravity="center"
+                            android:paddingVertical="8dp"
+                            android:text="@string/default.sell"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/advancedStockFragment.trade.buy.constraintLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="24dp"
+                        android:background="@drawable/rounded_stroke_offline"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.trade.sell.constraintLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.header">
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.trade.buy.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:gravity="center"
+                            android:paddingVertical="8dp"
+                            android:text="@string/default.buy"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/advancedStockFragment.trade.statistics.constraintLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.sell.constraintLayout">
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.trade.statistics.units.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.trade.units"
+                            android:textColor="@color/theme.colorOnPrimary"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.trade.statistics.totalValue.textView"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.trade.statistics.totalValue.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.trade.totalValue"
+                            android:textColor="@color/theme.colorOnPrimary"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.trade.statistics.units.textView"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.robinhood.ticker.TickerView
+                            android:id="@+id/advancedStockFragment.trade.statistics.units.tickerView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/default.double"
+                            app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.trade.statistics.units.textView"
+                            app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.trade.statistics.units.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.statistics.units.textView" />
+
+                        <com.robinhood.ticker.TickerView
+                            android:id="@+id/advancedStockFragment.trade.statistics.totalValue.tickerView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/default.price"
+                            app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.trade.statistics.totalValue.textView"
+                            app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.trade.statistics.totalValue.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.statistics.totalValue.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.trade.statistics.averageCost.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.trade.averageCost"
+                            android:textColor="@color/theme.colorOnPrimary"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.trade.statistics.portfolioMakeup.textView"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.statistics.units.tickerView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.trade.statistics.portfolioMakeup.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="24dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.trade.portfolioMakeup"
+                            android:textColor="@color/theme.colorOnPrimary"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.trade.statistics.averageCost.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.statistics.totalValue.tickerView" />
+
+                        <com.robinhood.ticker.TickerView
+                            android:id="@+id/advancedStockFragment.trade.statistics.averageCost.tickerView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/default.double"
+                            app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.trade.statistics.averageCost.textView"
+                            app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.trade.statistics.averageCost.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.statistics.averageCost.textView" />
+
+                        <com.robinhood.ticker.TickerView
+                            android:id="@+id/advancedStockFragment.trade.statistics.portfolioMakeup.tickerView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/default.doublePercentage"
+                            app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.trade.statistics.portfolioMakeup.textView"
+                            app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.trade.statistics.portfolioMakeup.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.statistics.portfolioMakeup.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.trade.statistics.todayUnrealizedReturn.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.trade.todayUnrealizedReturn"
+                            android:textColor="@color/theme.colorOnPrimary"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.trade.statistics.todayRealizedReturn.textView"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.statistics.averageCost.tickerView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.trade.statistics.todayRealizedReturn.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="24dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.trade.todayRealizedReturn"
+                            android:textColor="@color/theme.colorOnPrimary"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.trade.statistics.todayUnrealizedReturn.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.statistics.averageCost.tickerView" />
+
+                        <com.robinhood.ticker.TickerView
+                            android:id="@+id/advancedStockFragment.trade.statistics.todayUnrealizedReturn.tickerView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/default.double"
+                            app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.trade.statistics.todayUnrealizedReturn.textView"
+                            app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.trade.statistics.todayUnrealizedReturn.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.statistics.todayUnrealizedReturn.textView" />
+
+                        <com.robinhood.ticker.TickerView
+                            android:id="@+id/advancedStockFragment.trade.statistics.todayRealizedReturn.tickerView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/default.double"
+                            app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.trade.statistics.todayRealizedReturn.textView"
+                            app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.trade.statistics.todayRealizedReturn.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.statistics.todayRealizedReturn.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.trade.statistics.totalUnrealizedReturn.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.trade.totalUnrealizedReturn"
+                            android:textColor="@color/theme.colorOnPrimary"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.trade.statistics.todayRealizedReturn.textView"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.statistics.todayUnrealizedReturn.tickerView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.trade.statistics.totalRealizedReturn.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="24dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.trade.totalRealizedReturn"
+                            android:textColor="@color/theme.colorOnPrimary"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.trade.statistics.todayUnrealizedReturn.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.statistics.todayRealizedReturn.tickerView" />
+
+                        <com.robinhood.ticker.TickerView
+                            android:id="@+id/advancedStockFragment.trade.statistics.totalUnrealizedReturn.tickerView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/default.double"
+                            app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.trade.statistics.totalUnrealizedReturn.textView"
+                            app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.trade.statistics.totalUnrealizedReturn.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.statistics.totalUnrealizedReturn.textView" />
+
+                        <com.robinhood.ticker.TickerView
+                            android:id="@+id/advancedStockFragment.trade.statistics.totalRealizedReturn.tickerView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/default.double"
+                            app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.trade.statistics.totalRealizedReturn.textView"
+                            app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.trade.statistics.totalRealizedReturn.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.statistics.totalRealizedReturn.textView" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/advancedStockFragment.quickStatistics.constrainLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.trade.constraintLayout">
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.quickStatistics.header.textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/roboto_condensed"
+                        android:text="@string/default.quickStatistics"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/advancedStockFragment.quickStatistics.info.imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="8dp"
+                        app:srcCompat="@drawable/ic_round_info_24"
+                        app:layout_constraintBottom_toBottomOf="@+id/advancedStockFragment.quickStatistics.header.textView"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.quickStatistics.header.textView"
+                        app:layout_constraintTop_toTopOf="@+id/advancedStockFragment.quickStatistics.header.textView" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.quickStatistics.chartHigh.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/roboto_condensed"
+                        android:text="@string/advancedStock.quickStatistics.chartHigh"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.quickStatistics.chartLow.textView"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.header.textView"
+                        tools:ignore="SmallSp" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.quickStatistics.chartLow.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="24dp"
+                        android:fontFamily="@font/roboto_condensed"
+                        android:text="@string/advancedStock.quickStatistics.chartLow"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.quickStatistics.chartHigh.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.header.textView"
+                        tools:ignore="SmallSp" />
+
+                    <com.robinhood.ticker.TickerView
+                        android:id="@+id/advancedStockFragment.quickStatistics.chartHigh.tickerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default.price"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.quickStatistics.chartHigh.textView"
+                        app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.quickStatistics.chartHigh.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.chartHigh.textView" />
+
+                    <com.robinhood.ticker.TickerView
+                        android:id="@+id/advancedStockFragment.quickStatistics.chartLow.tickerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default.price"
+                        app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.quickStatistics.chartLow.textView"
+                        app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.quickStatistics.chartLow.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.chartLow.textView" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.quickStatistics.bid.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/roboto_condensed"
+                        android:text="@string/advancedStock.quickStatistics.bid"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.quickStatistics.chartLow.textView"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.chartHigh.tickerView"
+                        tools:ignore="SmallSp" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.quickStatistics.ask.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:fontFamily="@font/roboto_condensed"
+                        android:text="@string/advancedStock.quickStatistics.ask"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.quickStatistics.chartHigh.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.chartLow.tickerView"
+                        tools:ignore="SmallSp" />
+
+                    <com.robinhood.ticker.TickerView
+                        android:id="@+id/advancedStockFragment.quickStatistics.bid.tickerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default.bidAsk"
+                        app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.quickStatistics.chartHigh.textView"
+                        app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.quickStatistics.chartHigh.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.bid.textView" />
+
+                    <com.robinhood.ticker.TickerView
+                        android:id="@+id/advancedStockFragment.quickStatistics.ask.tickerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default.bidAsk"
+                        app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.quickStatistics.chartLow.textView"
+                        app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.quickStatistics.chartLow.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.ask.textView" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.quickStatistics.chartPreviousClose.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/roboto_condensed"
+                        android:text="@string/advancedStock.quickStatistics.previousClose"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.quickStatistics.chartLow.textView"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.bid.tickerView"
+                        tools:ignore="SmallSp" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.quickStatistics.volume.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:fontFamily="@font/roboto_condensed"
+                        android:text="@string/advancedStock.quickStatistics.volume"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.quickStatistics.chartHigh.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.ask.tickerView"
+                        tools:ignore="SmallSp" />
+
+                    <com.robinhood.ticker.TickerView
+                        android:id="@+id/advancedStockFragment.quickStatistics.chartPreviousClose.tickerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default.price"
+                        app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.quickStatistics.chartHigh.textView"
+                        app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.quickStatistics.chartHigh.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.chartPreviousClose.textView" />
+
+                    <com.robinhood.ticker.TickerView
+                        android:id="@+id/advancedStockFragment.quickStatistics.volume.tickerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default.double"
+                        app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.quickStatistics.chartLow.textView"
+                        app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.quickStatistics.chartLow.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.volume.textView" />
+
+
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.quickStatistics.peRatio.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/advancedStock.quickStatistics.peRatio"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.quickStatistics.dividend.textView"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.chartPreviousClose.tickerView"
+                        tools:ignore="SmallSp" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.quickStatistics.dividend.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:text="@string/advancedStock.quickStatistics.dividend"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.quickStatistics.peRatio.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.volume.tickerView"
+                        tools:ignore="SmallSp" />
+
+                    <com.robinhood.ticker.TickerView
+                        android:id="@+id/advancedStockFragment.quickStatistics.peRatio.tickerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default.price"
+                        app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.quickStatistics.peRatio.textView"
+                        app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.quickStatistics.peRatio.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.peRatio.textView" />
+
+                    <com.robinhood.ticker.TickerView
+                        android:id="@+id/advancedStockFragment.quickStatistics.dividend.tickerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default.price"
+                        app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.quickStatistics.dividend.textView"
+                        app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.quickStatistics.dividend.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.dividend.textView" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.quickStatistics.eps.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/advancedStock.quickStatistics.eps"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.quickStatistics.oneYearTargetEst.textView"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.peRatio.tickerView"
+                        tools:ignore="SmallSp" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.quickStatistics.oneYearTargetEst.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:text="@string/advancedStock.quickStatistics.oneYearTargetEst"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.quickStatistics.eps.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.dividend.tickerView"
+                        tools:ignore="SmallSp" />
+
+                    <com.robinhood.ticker.TickerView
+                        android:id="@+id/advancedStockFragment.quickStatistics.oneYearTargetEst.tickerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/default.price"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.quickStatistics.oneYearTargetEst.textView"
+                        app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.quickStatistics.oneYearTargetEst.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.oneYearTargetEst.textView" />
+
+                    <com.robinhood.ticker.TickerView
+                        android:id="@+id/advancedStockFragment.quickStatistics.eps.tickerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/default.price"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.quickStatistics.eps.textView"
+                        app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.quickStatistics.eps.textView"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.eps.textView" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/advancedStockFragment.analystRating.constraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.constrainLayout">
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.analystRating.header.textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/roboto_condensed"
+                        android:text="@string/advancedStock.analystRatings.header"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/advancedStockFragment.analystRating.info.imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="8dp"
+                        app:srcCompat="@drawable/ic_round_info_24"
+                        app:layout_constraintBottom_toBottomOf="@+id/advancedStockFragment.analystRating.header.textView"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.analystRating.header.textView"
+                        app:layout_constraintTop_toTopOf="@+id/advancedStockFragment.analystRating.header.textView" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/advancedStockFragment.analystRating.rating.constraintLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/advancedStockFragment.analystRating.header.textView"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/advancedStockFragment.analystRating.header.textView">
+
+                        <ImageView
+                            android:id="@+id/advancedStockFragment.analystRating.rating.imageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/ic_round_sell_24"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/theme.colorOnPrimary" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.analystRating.rating.textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.analystRating.rating.imageView"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/advancedStockFragment.analystRatings.circle.background"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:alpha="0.4"
+                        android:background="@drawable/circle_offline"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.analystRating.statistics.constraintLayout"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.analystRating.header.textView" />
+
+                    <LinearLayout
+                        android:id="@+id/advancedStockFragment.analystRating.circle.linearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="@+id/advancedStockFragment.analystRatings.circle.background"
+                        app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.analystRatings.circle.background"
+                        app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.analystRatings.circle.background"
+                        app:layout_constraintTop_toTopOf="@+id/advancedStockFragment.analystRatings.circle.background">
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.analystRating.circle.percentage.textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/default.percentage"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.analystRating.circle.total.textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/advancedStock.analystRatings.totalRatings"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/advancedStockFragment.analystRating.statistics.constraintLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.analystRatings.circle.background"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.analystRating.header.textView">
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.analystRating.statistics.buy.textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/default.buy"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toTopOf="@+id/advancedStockFragment.analystRating.statistics.buy.progressBar"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ProgressBar
+                            android:id="@+id/advancedStockFragment.analystRating.statistics.buy.progressBar"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="0dp"
+                            android:layout_height="6dp"
+                            android:progressBackgroundTint="@color/theme.transparent"
+                            android:progressTint="@color/stock.offline"
+                            app:layout_constraintBottom_toTopOf="@+id/advancedStockFragment.analystRating.statistics.hold.textView"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.analystRating.statistics.buy.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.analystRating.statistics.hold.textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.analystRatings.hold"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toTopOf="@+id/advancedStockFragment.analystRating.statistics.hold.progressBar"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.analystRating.statistics.buy.progressBar" />
+
+                        <ProgressBar
+                            android:id="@+id/advancedStockFragment.analystRating.statistics.hold.progressBar"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="0dp"
+                            android:layout_height="6dp"
+                            android:progressBackgroundTint="@color/theme.transparent"
+                            android:progressTint="@color/stock.offline"
+                            app:layout_constraintBottom_toTopOf="@+id/advancedStockFragment.analystRating.statistics.sell.textView"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.analystRating.statistics.hold.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.analystRating.statistics.sell.textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/default.sell"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toTopOf="@+id/advancedStockFragment.analystRating.statistics.sell.progressBar"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.analystRating.statistics.hold.progressBar" />
+
+                        <ProgressBar
+                            android:id="@+id/advancedStockFragment.analystRating.statistics.sell.progressBar"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="0dp"
+                            android:layout_height="6dp"
+                            android:progressBackgroundTint="@color/theme.transparent"
+                            android:progressTint="@color/stock.offline"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.analystRating.statistics.sell.textView" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/advancedStockFragment.news.constraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.analystRating.constraintLayout">
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.news.header.textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/roboto_condensed"
+                        android:text="@string/advancedStock.news.header"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/advancedStockFragment.news.rss.imageView"
+                        android:layout_width="19dp"
+                        android:layout_height="15dp"
+                        android:layout_marginStart="8dp"
+                        app:srcCompat="@drawable/ic_round_rss_feed_24"
+                        app:layout_constraintBottom_toBottomOf="@+id/advancedStockFragment.news.header.textView"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.news.header.textView"
+                        app:layout_constraintTop_toTopOf="@+id/advancedStockFragment.news.header.textView" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/advancedStockFragment.news.recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="16dp"
+                        android:layoutAnimation="@anim/layout_animation_stagger"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="LinearLayoutManager"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.news.header.textView" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/advancedStockFragment.earnings.constraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.news.constraintLayout">
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.earnings.header.textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/roboto_condensed"
+                        android:text="@string/advancedStock.earnings.header"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/advancedStockFragment.earnings.info.imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="8dp"
+                        app:srcCompat="@drawable/ic_round_info_24"
+                        app:layout_constraintBottom_toBottomOf="@+id/advancedStockFragment.earnings.header.textView"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.earnings.header.textView"
+                        app:layout_constraintTop_toTopOf="@+id/advancedStockFragment.earnings.header.textView" />
+
+                    <com.github.mikephil.charting.charts.BubbleChart
+                        android:id="@+id/advancedStockFragment.earnings.bubbleChart"
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
+                        android:alpha="0.8"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.earnings.header.textView" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/advancedStockFragment.earnings.legend.constraintLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.earnings.bubbleChart">
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.earnings.dateOne.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:gravity="center"
+                            android:text="@string/advancedStock.earnings.date"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.earnings.dateTwo.textView"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.earnings.changeOne.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:gravity="center"
+                            android:text="@string/default.change"
+                            android:textColor="@color/stock.offline"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.earnings.dateOne.textView"
+                            app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.earnings.dateOne.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.earnings.dateOne.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.earnings.dateTwo.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:gravity="center"
+                            android:text="@string/advancedStock.earnings.date"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.earnings.dateThree.textView"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.earnings.dateOne.textView"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.earnings.changeTwo.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:gravity="center"
+                            android:text="@string/default.change"
+                            android:textColor="@color/stock.offline"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.earnings.dateTwo.textView"
+                            app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.earnings.dateTwo.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.earnings.dateTwo.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.earnings.dateThree.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:gravity="center"
+                            android:text="@string/advancedStock.earnings.date"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.earnings.dateFour.textView"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.earnings.dateTwo.textView"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.earnings.changeThree.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:gravity="center"
+                            android:text="@string/default.change"
+                            android:textColor="@color/stock.offline"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.earnings.dateThree.textView"
+                            app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.earnings.dateThree.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.earnings.dateThree.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.earnings.dateFour.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:gravity="center"
+                            android:text="@string/advancedStock.earnings.date"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.earnings.dateThree.textView"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.earnings.changeFour.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:gravity="center"
+                            android:text="@string/default.change"
+                            android:textColor="@color/stock.offline"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.earnings.dateFour.textView"
+                            app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.earnings.dateFour.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.earnings.dateFour.textView" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.earnings.constraintLayout">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/roboto_condensed"
+                        android:text="@string/advancedStock.about.header"
+                        android:textColor="@color/theme.colorOnPrimary"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.about.summary.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:fontFamily="@font/roboto_condensed"
+                        android:justificationMode="inter_word"
+                        android:text="@string/default.na"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+                    <TextView
+                        android:id="@+id/advancedStockFragment.about.readMore.textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:fontFamily="@font/roboto_condensed_bold"
+                        android:text="@string/default.readMore"
+                        android:textColor="@color/stock.offline"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.about.summary.textView" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/advancedStockFragment.floatingScrollView.constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.9"
+        android:background="@color/theme.colorPrimary"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/advancedStockFragment.floatingScrollView.symbol.textView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="24dp"
+            android:fontFamily="@font/roboto_condensed"
+            android:gravity="center"
+            android:text="@string/default.symbol"
+            android:textColor="@color/theme.colorOnPrimary"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.robinhood.ticker.TickerView
+            android:id="@+id/advancedStockFragment.floatingScrollView.price.tickerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/default.price"
+            android:textColor="@color/stock.offline"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/advancedStockFragment.floatingScrollView.change.tickerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.robinhood.ticker.TickerView
+            android:id="@+id/advancedStockFragment.floatingScrollView.change.tickerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/default.change"
+            android:textColor="@color/stock.offline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.floatingScrollView.price.tickerView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

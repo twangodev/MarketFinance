@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu.bottomNavigationView.dashboard"
+        android:title="@string/menu.bottomNavigationView.dashboardTitle"
+        android:icon="@drawable/ic_round_pie_chart_24" />
+    <item
+        android:id="@+id/menu.bottomNavigationView.search"
+        android:title="@string/menu.bottomNavigationView.searchTitle"
+        android:icon="@drawable/ic_round_search_24" />
+    <item
+        android:id="@+id/menu.bottomNavigationView.orders"
+        android:title="@string/menu.bottomNavigationView.ordersTitle"
+        android:icon="@drawable/ic_round_trending_up_24" />
+</menu>

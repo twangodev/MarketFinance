@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="stock.negative">#FF5100</color>
+    <color name="stock.offline">#79858B</color>
+    <color name="stock.positive">#00C805</color>
+
+    <color name="stock.negativeVariant">#FF853C</color>
+    <color name="stock.offlineVariant">#A8B5BB</color>
+    <color name="stock.positiveVariant">#61FC4C</color>
+
+    <color name="theme.transparent">#00FFFFFF</color>
+    <color name="theme.colorPrimary">#131516</color>
+    <color name="theme.colorPrimaryVariant">#303233</color>
+    <color name="theme.colorOnPrimary">#D8D4Cf</color>
+
+</resources>

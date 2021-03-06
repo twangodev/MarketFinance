@@ -1,0 +1,28 @@
+Created by twango on 3/4/2021
+
+This is a concept file with following syntax for each concept.
+# Data Structure
+
+- Application
+    - List of Portfolio Data
+        - Name
+        - ID
+        - Initial Buying Power
+        - Live Portfolio Value
+        - List of User Watchlist
+            - List Name
+            - List of Watchlist Data
+                - Symbol
+                - Name
+                - Quote Type
+                - Last Price
+                - Last Close Price
+        - List of User Orders
+            - Symbol
+            - Quantity
+            - Quote Type
+            - Order Type
+            - Order Price
+            - Status Code
+            - Transaction Time
+            - Expiration Time
