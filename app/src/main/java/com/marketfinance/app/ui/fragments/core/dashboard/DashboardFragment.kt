@@ -16,9 +16,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.marketfinance.app.R
 import com.marketfinance.app.ui.fragments.advancedStockFragment.MarketStatusReturn
+import com.marketfinance.app.utils.Defaults
 import com.marketfinance.app.utils.MarketInterface
-import com.marketfinance.app.utils.RequestSingleton
-import com.marketfinance.app.utils.objects.Defaults
+import com.marketfinance.app.utils.network.RequestSingleton
 import com.marketfinance.app.utils.security.EncryptedPreference
 import com.marketfinance.app.utils.storage.PortfolioData
 import com.marketfinance.app.utils.threads.ThreadManager

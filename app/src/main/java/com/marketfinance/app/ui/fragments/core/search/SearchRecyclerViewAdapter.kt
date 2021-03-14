@@ -15,9 +15,9 @@ import com.google.gson.Gson
 import com.marketfinance.app.R
 import com.marketfinance.app.ui.fragments.advancedStockFragment.AdvancedStockFragment
 import com.marketfinance.app.ui.fragments.advancedStockFragment.data.AdvancedStockIntentData
+import com.marketfinance.app.utils.Defaults
 import com.marketfinance.app.utils.FragmentTransactions
 import com.marketfinance.app.utils.MarketInterface
-import com.marketfinance.app.utils.objects.Defaults
 import com.robinhood.ticker.TickerView
 import kotlin.math.abs
 
@@ -109,7 +109,7 @@ class SearchRecyclerViewAdapter(
                 }
                 priceTickerView.apply {
                     visibility = View.VISIBLE
-                    setText(formatNullableDoubleWithDollar(element.currentPrice), true)
+                    setText(formatDoubleDollar(element.currentPrice), true)
                     textColor = getColor(context, element.change)
                 }
                 changeImageView.apply {
@@ -120,8 +120,8 @@ class SearchRecyclerViewAdapter(
                 changeTickerView.apply {
                     visibility = View.VISIBLE
                     setText(
-                        "${formatNullableDoubleWithDollar(abs(element.change))} (${
-                            formatNullableDouble(
+                        "${formatDoubleDollar(abs(element.change))} (${
+                            formatDouble(
                                 abs(element.percentage)
                             )
                         }%)", true

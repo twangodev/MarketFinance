@@ -1,4 +1,4 @@
-package com.marketfinance.app.utils.objects
+package com.marketfinance.app.utils
 
 import com.marketfinance.app.ui.fragments.core.dashboard.WatchListData
 

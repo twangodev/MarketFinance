@@ -2,7 +2,7 @@ package com.marketfinance.app.utils.network
 
 import com.marketfinance.app.ui.fragments.advancedStockFragment.data.RangeIntervalData
 
-interface URLGetter {
+interface URLRetriever {
 
     /**
      * Retrieves financial data URL from Yahoo Finance
@@ -39,6 +39,12 @@ interface URLGetter {
         "https://query1.finance.yahoo.com/v10/finance/quoteSummary/$symbol?modules=assetProfile,earningsHistory,recommendationTrend"
 
 
+    /**
+     * Retrieves news data using an RSS to JSON API
+     *
+     * @param symbol Symbol for news
+     * @return URL
+     */
     fun getSymbolNewsData(symbol: String) =
         "https://api.rss2json.com/v1/api.json?rss_url=http://feeds.finance.yahoo.com/rss/2.0/headline?s=$symbol&region=US&lang=en-US"
 

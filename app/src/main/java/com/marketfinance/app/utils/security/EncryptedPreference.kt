@@ -39,5 +39,4 @@ class EncryptedPreference(private val preferenceName: String) {
     }
 
 
-
 }

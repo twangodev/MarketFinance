@@ -11,7 +11,6 @@ import android.view.animation.Transformation
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import com.marketfinance.app.R
-import com.marketfinance.app.utils.objects.Defaults
 import com.robinhood.ticker.TickerUtils
 import com.robinhood.ticker.TickerView
 import java.math.BigDecimal
@@ -22,16 +21,18 @@ import kotlin.math.abs
 
 /**
  * Interface for Market related functions
- * @author twango-dev
+ * @author James Ding
  */
 interface MarketInterface {
 
     /**
      * Initializes ticker. Should be called in onCreateView or equivalent
+     *
      * @param ticker [TickerView] to initialize
      * @param initialText The initial text the [TickerView] should have
      * @param font Sets the [Typeface] for the [TickerView]
      * @param duration The animation duration
+     * @author James Ding
      */
     fun initializeTicker(ticker: TickerView, initialText: String, font: Typeface, duration: Long) {
         ticker.typeface = font
@@ -44,10 +45,12 @@ interface MarketInterface {
 
     /**
      * Formats decimal with US dollar with at least 2 decimal digits and a max of 3 decimal digits
+     *
      * @param double Given [double] or to format
      * @return Formatted [Double] or N/A
+     * @author James Ding
      */
-    fun formatNullableDoubleWithDollar(double: Double?): String = if (double != null) {
+    fun formatDoubleDollar(double: Double?): String = if (double != null) {
         "$" + DecimalFormat("0.00#").format(double)
     } else {
         "N/A"
@@ -55,10 +58,12 @@ interface MarketInterface {
 
     /**
      * Formats decimal without US dollar with at least 2 decimal digits and a max of 3 decimal digits
+     *
      * @param double Given [double] or to format
      * @return Formatted [Double] or N/A
+     * @author James Ding
      */
-    fun formatNullableDouble(double: Double?): String = if (double != null) {
+    fun formatDouble(double: Double?): String = if (double != null) {
         DecimalFormat("0.00#").format(double)
     } else {
         "N/A"
@@ -66,37 +71,45 @@ interface MarketInterface {
 
     /**
      * Appends corresponding abbreviation for large numbers
-     * @param double Given [double]
+     *
+     * @param long Given [long]
      * @return Formatted [Long]
+     * @author James Ding
      */
-    fun formatLargeNumber(double: Double): String {
+    fun formatLargeNumber(long: Long?): String {
         val roundLimit = Defaults.roundLimit
-        return when {
-            abs(double / 1000000000000) > 1 -> BigDecimal(double / 1000000000000).setScale(
-                roundLimit,
-                RoundingMode.HALF_EVEN
-            ).toString() + "T"
-            abs(double / 1000000000) > 1 -> BigDecimal(double / 1000000000).setScale(
-                roundLimit,
-                RoundingMode.HALF_EVEN
-            ).toString() + "B"
-            abs(double / 1000000) > 1 -> BigDecimal(double / 1000000).setScale(
-                roundLimit,
-                RoundingMode.HALF_EVEN
-            ).toString() + "M"
-            abs(double / 1000) > 1 -> BigDecimal(double / 1000).setScale(
-                roundLimit,
-                RoundingMode.HALF_EVEN
-            ).toString() + "K"
-            else -> formatNullableDouble(double)
+        return if (long != null) {
+            when {
+                abs(long / 1000000000000) > 1 -> BigDecimal(long / 1000000000000).setScale(
+                    roundLimit,
+                    RoundingMode.HALF_EVEN
+                ).toString() + "T"
+                abs(long / 1000000000) > 1 -> BigDecimal(long / 1000000000).setScale(
+                    roundLimit,
+                    RoundingMode.HALF_EVEN
+                ).toString() + "B"
+                abs(long / 1000000) > 1 -> BigDecimal(long / 1000000).setScale(
+                    roundLimit,
+                    RoundingMode.HALF_EVEN
+                ).toString() + "M"
+                abs(long / 1000) > 1 -> BigDecimal(long / 1000).setScale(
+                    roundLimit,
+                    RoundingMode.HALF_EVEN
+                ).toString() + "K"
+                else -> formatDouble(long.toDouble())
+            }
+        } else {
+            "N/A"
         }
     }
 
     /**
      * Retrieves interpreted color with [change]
+     *
      * @param context Required to get the interpreted color with [ContextCompat]
      * @param change The change to determine the color
      * @return Color [Int]
+     * @author James Ding
      */
     fun getColor(context: Context, change: Double) = if (change >= 0) {
         ContextCompat.getColor(context, R.color.stock_positive)
@@ -106,8 +119,10 @@ interface MarketInterface {
 
     /**
      * Retrieves color identification with [change]
+     *
      * @param change The change to determine the color
      * @return Color Identification [Int]
+     * @author James Ding
      */
     fun getRawColor(change: Double) = if (change >= 0) {
         R.color.stock_positive
@@ -117,6 +132,7 @@ interface MarketInterface {
 
     /**
      * Retrieves drawable with [change]
+     *
      * @param context Required to get the drawable with [ContextCompat]
      * @param change The change to determine the color
      */
@@ -127,7 +143,10 @@ interface MarketInterface {
     }
 
     /**
+     * Formats [EditText] for [Int]
+     *
      * Code sourced from [https://stackoverflow.com/questions/34607560/add-thousand-separators-automatically-while-text-changes-in-android-edittext/34607831]
+     *
      * @author Shree Krishna
      */
     class NumberTextWatcherForThousand(var editText: EditText) : TextWatcher {
@@ -200,8 +219,8 @@ interface MarketInterface {
 
     /**
      * Sourced from [https://stackoverflow.com/questions/8140571/resizing-layouts-programmatically-as-animation]
-     * @author Tom Howard
-     * @author Faylon
+     *
+     * @author Tom Howard, Faylon
      */
     class ResizeAnimation(
         private val view: View,

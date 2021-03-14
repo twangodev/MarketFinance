@@ -8,7 +8,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.marketfinance.app.R
-import com.marketfinance.app.utils.objects.Defaults
+import com.marketfinance.app.ui.fragments.advancedStockFragment.data.NewsResponseData
+import com.marketfinance.app.utils.Defaults
 
 class NewsRecyclerViewAdapter(
     private val newsListData: MutableList<NewsResponseData?>

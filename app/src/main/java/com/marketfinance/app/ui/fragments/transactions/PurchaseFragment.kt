@@ -12,19 +12,16 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.marketfinance.app.R
-import com.marketfinance.app.ui.fragments.advancedStockFragment.JSONExceptionHandler
 import com.marketfinance.app.ui.fragments.advancedStockFragment.ValidIntervals
 import com.marketfinance.app.ui.fragments.advancedStockFragment.data.AdvancedStockIntentData
 import com.marketfinance.app.ui.fragments.transactions.market.MarketOrderPurchaseFragment
 import com.marketfinance.app.utils.Calculations
+import com.marketfinance.app.utils.Defaults
 import com.marketfinance.app.utils.FragmentTransactions
 import com.marketfinance.app.utils.MarketInterface
-import com.marketfinance.app.utils.RequestSingleton
-import com.marketfinance.app.utils.network.APIInterface
-import com.marketfinance.app.utils.objects.Defaults
+import com.marketfinance.app.utils.network.APIWrapper
+import com.marketfinance.app.utils.network.RequestSingleton
 import com.marketfinance.app.utils.threads.ThreadManager
-import com.robinhood.ticker.TickerView
-import org.json.JSONException
 
 class PurchaseFragment : Fragment(), Calculations, FragmentTransactions, MarketInterface {
 
@@ -32,7 +29,7 @@ class PurchaseFragment : Fragment(), Calculations, FragmentTransactions, MarketI
 
     private val gson = Gson()
     private val threadManager = ThreadManager()
-    private val apiInterface = APIInterface("", ValidIntervals.Spark.ONE_DAY)
+    private val apiInterface = APIWrapper("", ValidIntervals.Spark.ONE_DAY)
 
     private var symbol = ""
     private var name = ""
@@ -89,8 +86,14 @@ class PurchaseFragment : Fragment(), Calculations, FragmentTransactions, MarketI
             )
 
             findViewById<ConstraintLayout>(R.id.purchase_marketOrder_constraintLayout).setOnClickListener {
-                val marketOrderPurchaseFragment = attachJSONtoFragment(MarketOrderPurchaseFragment(), jsonData)
-                replaceFragment(marketOrderPurchaseFragment, supportFragmentManager.beginTransaction(), fragmentAnimations, false)
+                val marketOrderPurchaseFragment =
+                    attachJSONtoFragment(MarketOrderPurchaseFragment(), jsonData)
+                replaceFragment(
+                    marketOrderPurchaseFragment,
+                    supportFragmentManager.beginTransaction(),
+                    fragmentAnimations,
+                    false
+                )
                 threadManager.killAllThreads()
             }
         }
@@ -102,13 +105,14 @@ class PurchaseFragment : Fragment(), Calculations, FragmentTransactions, MarketI
                 sparkRequestCount++
                 Log.d(TAG, "[REQUEST] Code 200. Request for $symbol Count: $sparkRequestCount.")
 
+                /*
                 val spark = try {
                     response.getJSONObject("spark")
                 } catch (error: JSONException) {
                     JSONExceptionHandler.jsonObject("spark")
                 }
                 val result = try {
-                    spark?.getJSONArray("result")?.getJSONObject(0)
+                    spark.getJSONArray("result")?.getJSONObject(0)
                 } catch (error: JSONException) {
                     JSONExceptionHandler.jsonObject("result")
                 }
@@ -135,13 +139,15 @@ class PurchaseFragment : Fragment(), Calculations, FragmentTransactions, MarketI
 
                 activity?.findViewById<TickerView>(R.id.purchase_header_details_tickerView)
                     ?.setText(
-                        "$name • ${formatNullableDoubleWithDollar(currentPrice)}", true
+                        "$name • ${formatDoubleDollar(currentPrice)}", true
                     )
 
                 if (currentPrice != null && previousClose != null && context != null) {
                     val change = calculateChange(currentPrice, previousClose)
                     setPolarity(getRawColor(change))
                 }
+
+                 */
 
             }, { error ->
 

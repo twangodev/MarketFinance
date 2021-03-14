@@ -18,8 +18,8 @@ import com.marketfinance.app.ui.fragments.core.dashboard.DashboardFragment
 import com.marketfinance.app.ui.fragments.core.dashboard.UserWatchListData
 import com.marketfinance.app.ui.fragments.core.orders.OrdersFragment
 import com.marketfinance.app.ui.fragments.core.search.SearchFragment
+import com.marketfinance.app.utils.Defaults
 import com.marketfinance.app.utils.FragmentTransactions
-import com.marketfinance.app.utils.objects.Defaults
 import com.marketfinance.app.utils.security.EncryptedPreference
 import com.marketfinance.app.utils.security.Hashing
 import com.marketfinance.app.utils.storage.PortfolioData

@@ -1,8 +1,8 @@
 package com.marketfinance.app.utils.storage
 
-import com.marketfinance.app.utils.security.Hashing
 import com.marketfinance.app.ui.fragments.core.dashboard.UserWatchListData
 import com.marketfinance.app.ui.fragments.core.orders.UserOrderData
+import com.marketfinance.app.utils.security.Hashing
 
 /**
  * Parent Data Class

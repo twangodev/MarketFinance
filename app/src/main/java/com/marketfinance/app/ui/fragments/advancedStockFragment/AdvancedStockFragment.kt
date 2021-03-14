@@ -27,39 +27,38 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import com.marketfinance.app.R
 import com.marketfinance.app.ui.fragments.advancedStockFragment.adapters.NewsRecyclerViewAdapter
-import com.marketfinance.app.ui.fragments.advancedStockFragment.adapters.NewsResponseData
 import com.marketfinance.app.ui.fragments.advancedStockFragment.adapters.SparkViewAdapter
-import com.marketfinance.app.ui.fragments.advancedStockFragment.adapters.SparkViewData
 import com.marketfinance.app.ui.fragments.advancedStockFragment.data.AdvancedStockIntentData
-import com.marketfinance.app.ui.fragments.advancedStockFragment.data.CandlestickData
+import com.marketfinance.app.ui.fragments.advancedStockFragment.data.AnalystData
+import com.marketfinance.app.ui.fragments.advancedStockFragment.data.NewsResponseData
+import com.marketfinance.app.ui.fragments.advancedStockFragment.data.SparkViewData
 import com.marketfinance.app.ui.fragments.transactions.PurchaseFragment
-import com.marketfinance.app.utils.Calculations
-import com.marketfinance.app.utils.FragmentTransactions
-import com.marketfinance.app.utils.MarketInterface
-import com.marketfinance.app.utils.RequestSingleton
-import com.marketfinance.app.utils.network.APIInterface
-import com.marketfinance.app.utils.objects.Defaults
+import com.marketfinance.app.utils.*
+import com.marketfinance.app.utils.network.APIWrapper
+import com.marketfinance.app.utils.network.JSONArrayWrapper.Companion.toList
+import com.marketfinance.app.utils.network.JSONObjectWrapper.Companion.getElement
+import com.marketfinance.app.utils.network.RequestSingleton
+import com.marketfinance.app.utils.network.parser.JSONObjectParser
+import com.marketfinance.app.utils.network.parser.responses.historical.Quote
 import com.marketfinance.app.utils.threads.ThreadManager
 import com.robinhood.spark.SparkView
 import com.robinhood.spark.animation.LineSparkAnimator
 import com.robinhood.ticker.TickerView
-import org.json.JSONException
+import org.json.JSONArray
 import org.json.JSONObject
-import java.math.BigDecimal
-import java.math.RoundingMode
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
 import kotlin.math.abs
-import kotlin.math.round
+import kotlin.math.roundToInt
 
-class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface, Calculations {
+class AdvancedStockFragment : Calculations, Fragment(), FragmentTransactions, MapExtensions, MarketInterface, LayoutManager, JSONObjectParser {
 
     private val TAG = "AdvancedStockFragment"
 
     private val gson = Gson()
     private val threadManager = ThreadManager()
-    private val apiInterface = APIInterface("", ValidIntervals.Spark.ONE_DAY)
+    private val apiInterface = APIWrapper("", ValidIntervals.Spark.ONE_DAY)
 
     private var queue: RequestSingleton? = null
     private var paused = false
@@ -68,18 +67,18 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
     private var name = ""
     private var quoteType = ""
     private var currentMarketPrice: Double? = null
-    private var chartPreviousClose: Double? = null
+    private var previousClosePrice: Double? = null
     private var change: Double? = null
     private var percentage: Double? = null
     private var sparkData = SparkViewData(mutableListOf(), 0.00)
-    private var candleStickData = mutableListOf<CandlestickData>()
+    private var quoteData = Quote(null, null, null, null, null)
     private var financialDataRequestCount = 0
     private var financialDataRequestErrorCount = 0
     private var financialDataRequestErrorLimit = 10
     private var historicalDataRequestCount = 0
     private var newsList = mutableListOf<NewsResponseData?>(null)
-    private var actualEarningsList = mutableListOf<BubbleEntry>()
-    private var estimateEarningsList = mutableListOf<BubbleEntry>()
+    private var rawEpsActualList = mutableListOf<BubbleEntry>()
+    private var rawEpsEstimateList = mutableListOf<BubbleEntry>()
 
     var polarityColor = R.color.stock_offline
     var chartType = ChartType.LineChart
@@ -170,13 +169,28 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
             adapter = SparkViewAdapter(sparkData)
             baseLinePaint.pathEffect = DashPathEffect(floatArrayOf(10F, 10F), 0F)
 
-            scrubListener = SparkView.OnScrubListener { value ->
-                if (value == null) {
+            scrubListener = SparkView.OnScrubListener { rawIndex ->
+                if (rawIndex != null) {
+                    paused = true
+
+                    val index = rawIndex as Int
+
+                    val
+                } else {
+                    paused = false
+
+                    updatePrice()
+                    setChange()
+                }
+
+                activity?.findViewById<SwipeRefreshLayout>(R.id.advancedStockFragment_swipeRefreshLayout)?.isEnabled = !paused
+
+                if (index == null) {
                     paused = false
                     activity?.findViewById<SwipeRefreshLayout>(R.id.advancedStockFragment_swipeRefreshLayout)?.isEnabled =
                         true
                     view.apply {
-                        setPrice()
+                        updatePrice()
                         setChange()
                     }
                 } else {
@@ -184,37 +198,30 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
                     activity?.findViewById<SwipeRefreshLayout>(R.id.advancedStockFragment_swipeRefreshLayout)?.isEnabled =
                         false
                     view.apply {
-                        val scrubPrice = value as Double
+                        val scrubPrice = (index as Int).toDouble()
                         findViewById<TickerView>(R.id.advancedStockFragment_price_tickerView)?.setText(
-                            formatNullableDoubleWithDollar(scrubPrice),
+                            formatDoubleDollar(scrubPrice),
                             false
                         )
                         val scrubChange =
-                            chartPreviousClose?.let { calculateChange(scrubPrice, it) }
+                            previousClosePrice?.let { calculateChange(scrubPrice, it) }
                         val scrubPercentage =
                             scrubChange?.let { calculatePercentage(it, scrubPrice) }
                         val changeText =
-                            "${formatNullableDoubleWithDollar(scrubChange?.let { abs(it) })} (${
-                                formatNullableDouble(scrubPercentage?.let { abs(it) })
+                            "${formatDoubleDollar(scrubChange?.let { abs(it) })} (${
+                                formatDouble(scrubPercentage?.let { abs(it) })
                             }%)"
                         findViewById<TickerView>(R.id.advancedStockFragment_change_tickerView)?.setText(
                             changeText,
                             false
                         )
-                        if (scrubChange != null) {
-                            val assumedColor = getRawColor(scrubChange)
-                            if (polarityColor != assumedColor) {
-                                setPolarityTheme(assumedColor)
-                                activity?.findViewById<ImageView>(R.id.advancedStockFragment_change_imageView)
-                                    ?.apply {
-                                        setImageDrawable(context?.let {
-                                            getChangeDrawable(
-                                                it,
-                                                scrubChange
-                                            )
-                                        })
-                                        (drawable as AnimatedVectorDrawable).start()
-                                    }
+
+                        val assumedColor = scrubChange?.let { getRawColor(it) }
+                        if (polarityColor != assumedColor && assumedColor != null) {
+                            setPolarityTheme(assumedColor)
+                            activity?.findViewById<ImageView>(R.id.advancedStockFragment_change_imageView)?.apply {
+                                setImageDrawable(context?.let { getChangeDrawable(it, scrubChange) })
+                                (drawable as AnimatedVectorDrawable).start()
                             }
                         }
                     }
@@ -223,17 +230,15 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
         }
 
 
-
         // TODO move this to view.apply
-        view.findViewById<TextView>(R.id.advancedStockFragment_timeRangeSelector_1D_textView)
-            .apply {
-                setTextColor(highlightColor)
-                background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.background_stock_offline)
-                background.setTint(ContextCompat.getColor(requireContext(), polarityColor))
+        view.findViewById<TextView>(R.id.advancedStockFragment_timeRangeSelector_1D_textView).apply {
+            setTextColor(highlightColor)
+            background =
+                ContextCompat.getDrawable(requireContext(), R.drawable.background_stock_offline)
+            background.setTint(ContextCompat.getColor(requireContext(), polarityColor))
 
-                setOnClickListener { setTimeInterval(ValidIntervals.General.ONE_DAY, this) }
-            }
+            setOnClickListener { setTimeInterval(ValidIntervals.General.ONE_DAY, this) }
+        }
         view.findViewById<TextView>(R.id.advancedStockFragment_timeRangeSelector_5D_textView)
             .apply {
                 setOnClickListener { setTimeInterval(ValidIntervals.General.FIVE_DAY, this) }
@@ -274,7 +279,6 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
                     Defaults.tickerDefaultAnimation
                 )
             }
-
 
 
             findViewById<TickerView>(R.id.advancedStockFragment_change_tickerView).text =
@@ -340,7 +344,7 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
         val requests = listOf(
             getHistoricalDataRequest(true, true, true),
             getFinancialDataRequest(),
-            getQuoteSummaryRequest(),
+            getOneTimeDataRequest(),
             getNewsDataRequest()
         )
         for (i in requests) {
@@ -351,13 +355,13 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
         threadManager.createThread("FinancialDataThread", Thread {
             while (!Thread.interrupted() && financialDataRequestErrorCount < financialDataRequestErrorLimit) {
                 if (!paused) {
-                   try {
-                       Thread.sleep(Defaults.priceAPIFrequency)
-                       queue?.addToRequestQueue(getFinancialDataRequest())
-                   } catch (error: InterruptedException) {
-                       Log.e(TAG, error.stackTraceToString())
-                       break
-                   }
+                    try {
+                        Thread.sleep(Defaults.priceAPIFrequency)
+                        queue?.addToRequestQueue(getFinancialDataRequest())
+                    } catch (error: InterruptedException) {
+                        Log.e(TAG, error.stackTraceToString())
+                        break
+                    }
                 }
 
             }
@@ -429,7 +433,10 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
                     requireContext(),
                     R.drawable.rounded_stroke_negative
                 )
-                else -> ContextCompat.getDrawable(requireContext(), R.drawable.rounded_stroke_offline)
+                else -> ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.rounded_stroke_offline
+                )
             }
 
             activity?.findViewById<SwipeRefreshLayout>(R.id.advancedStockFragment_swipeRefreshLayout)
@@ -500,8 +507,8 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
     }
 
     private fun performRefresh() {
-        val requests = listOf(
-            getQuoteSummaryRequest(),
+        listOf(
+            getOneTimeDataRequest(),
             getNewsDataRequest(),
             getFinancialDataRequest(),
             getHistoricalDataRequest(
@@ -509,248 +516,111 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
                 financialDataRequestErrorCount >= financialDataRequestErrorLimit,
                 true
             )
-        )
-        for (i in requests) {
-            queue?.addToRequestQueue(i)
+        ).forEach { request ->
+            queue?.addToRequestQueue(request)
         }
     }
 
     @SuppressLint("SetTextI18n") // TODO remove
-    private fun getQuoteSummaryRequest() = apiInterface.getOneTimeData({ response ->
-        Log.d(TAG, "[REQUEST] Code 200. Request for oneTimeData.")
-
-        val result = try {
-            response.getJSONObject("quoteSummary").getJSONArray("result").getJSONObject(0)
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonObject("result")
-        }
-
-        // Asset Profile
-        val assetProfile = try {
-            result?.getJSONObject("assetProfile")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonObject("assetProfile")
-        }
-        val businessSummary = try {
-            assetProfile?.getString("longBusinessSummary")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.string("longBusinessSummary")
-        }
-        if (businessSummary != null) {
-            activity?.findViewById<TextView>(R.id.advancedStockFragment_about_summary_textView)?.text =
-                try {
-                    businessSummary.substring(0, Defaults.aboutSummaryLimit) + "…"
-                } catch (error: StringIndexOutOfBoundsException) {
-                    businessSummary
-                }
-            activity?.findViewById<TextView>(R.id.advancedStockFragment_about_readMore_textView)
-                ?.setOnClickListener {
-                    activity?.findViewById<TextView>(R.id.advancedStockFragment_about_summary_textView)?.text =
-                        businessSummary
-                    it.visibility = View.GONE
-                }
-        }
-
-        // Earnings Data
-        val earningsTrend = try {
-            result?.getJSONObject("earningsHistory")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonObject("earningsHistory")
-        }
-        if (earningsTrend != null) {
-            val history = try {
-                earningsTrend.getJSONArray("history")
-            } catch (error: JSONException) {
-                JSONExceptionHandler.jsonArray("history")
+    private fun getOneTimeDataRequest() = apiInterface.getOneTimeData({ response ->
+        response.parseAssetProfile()?.apply {
+            activity?.findViewById<TextView>(R.id.advancedStockFragment_about_summary_textView)?.text = try {
+                longBusinessSummary?.substring(0, Defaults.aboutSummaryLimit) + "…"
+            } catch (error: StringIndexOutOfBoundsException) {
+                longBusinessSummary
             }
-            val dateList = mutableListOf<String>()
-            actualEarningsList.clear()
-            estimateEarningsList.clear()
-            if (history != null) {
-                for (i in 0 until history.length()) {
-                    val element = try {
-                        history.getJSONObject(i)
-                    } catch (error: JSONException) {
-                        JSONExceptionHandler.jsonObject("history $i")
+            activity?.findViewById<TextView>(R.id.advancedStockFragment_about_readMore_textView)?.setOnClickListener {
+                activity?.findViewById<TextView>(R.id.advancedStockFragment_about_summary_textView)?.text = longBusinessSummary
+                it.hide()
+            }
+        }
+
+        response.parseEarningsHistory()?.apply {
+            rawEpsActualList.clear()
+            rawEpsEstimateList.clear()
+
+            history.forEachIndexed { index, value ->
+                value?.apply {
+                    activity?.findViewById<TextView>(AdvancedStockLayoutIDs.earningsDate[index])?.text = quarter?.fmt
+
+                    val bubbleX = BubbleConfiguration.bubbleX(index)
+                    val bubbleSize = BubbleConfiguration.size
+
+                    val rawEpsActual = epsActual?.raw
+                    val rawEpsEstimate = epsEstimate?.raw
+                    if (rawEpsActual != null && rawEpsEstimate != null) {
+                        rawEpsActualList.add(BubbleEntry(bubbleX, rawEpsActual.toFloat(), bubbleSize))
+                        rawEpsEstimateList.add(BubbleEntry(bubbleX, rawEpsEstimate.toFloat(), bubbleSize))
                     }
-                    val date = try {
-                        element?.getJSONObject("quarter")?.getString("fmt")
-                    } catch (error: JSONException) {
-                        JSONExceptionHandler.string("quarterFmt")
-                    }
-                    val actual = try {
-                        element?.getJSONObject("epsActual")?.getDouble("raw")
-                    } catch (error: JSONException) {
-                        JSONExceptionHandler.double("epsActualRaw")
-                    }?.toFloat()
-                    val estimate = try {
-                        element?.getJSONObject("epsEstimate")?.getDouble("raw")
-                    } catch (error: JSONException) {
-                        JSONExceptionHandler.double("epsEstimateRaw")
-                    }?.toFloat()
-                    if (date != null && estimate != null && actual != null) {
-                        dateList.add(date)
-                        actualEarningsList.add(
-                            BubbleEntry(
-                                BubbleConfiguration.bubbleX(i),
-                                actual,
-                                BubbleConfiguration.size
-                            )
-                        )
-                        estimateEarningsList.add(
-                            BubbleEntry(
-                                BubbleConfiguration.bubbleX(i),
-                                estimate,
-                                BubbleConfiguration.size
-                            )
-                        )
-                    }
-                }
-                for (i in actualEarningsList.indices) {
-                    activity?.apply {
-                        val earningPrice = BigDecimal(actualEarningsList[i].y.toDouble()).setScale(
-                            Defaults.roundLimit,
-                            RoundingMode.HALF_EVEN
-                        ).toDouble()
-                        val estimatePrice = estimateEarningsList[i].y.toDouble()
-                        val difference = calculateChange(earningPrice, estimatePrice)
-                        val earningText =
-                            "${formatNullableDouble(earningPrice)} (${abs(difference)})"
-                        findViewById<TextView>(AdvancedStockLayoutIDs.earningsDate[i]).text =
-                            dateList[i]
-                        findViewById<TextView>(AdvancedStockLayoutIDs.earningsChange[i]).apply {
-                            text = earningText
-                            setTextColor(getColor(context, difference))
-                        }
+
+                    val formattedEpsActual = formatDouble(rawEpsActual)
+                    val rawEpsDifference = rawEpsEstimate?.let { rawEpsActual?.minus(it) }
+                    val formattedEpsDifference = formatDouble(rawEpsDifference?.let { abs(it) })
+                    activity?.findViewById<TextView>(AdvancedStockLayoutIDs.earningsChange[index])?.apply {
+                        text = "$formattedEpsActual ($formattedEpsDifference)" // todo put via strings xml
+                        rawEpsDifference?.let { setTextColor(getColor(context, it)) }
                     }
                 }
             }
-            // No label because manual legend
-            val interpretedColor = ContextCompat.getColor(requireContext(), polarityColor)
-            updateBubbleCharts(interpretedColor)
-        } else {
-            activity?.findViewById<ConstraintLayout>(R.id.advancedStockFragment_earnings_constraintLayout)?.visibility =
-                View.GONE
+
+            context?.let { ContextCompat.getColor(it, polarityColor) }?.let { updateBubbleCharts(it) }
+        } ?: run {
+            activity?.findViewById<ConstraintLayout>(R.id.advancedStockFragment_earnings_constraintLayout)?.hide()
         }
 
+        response.parseRecommendationTrend()?.apply {
+            trend.firstOrNull()?.apply {
+                val buySum = buy?.let { strongBuy?.plus(it) } ?: strongBuy
+                val sellSum = sell?.let { strongSell?.plus(it) } ?: strongSell
+                val totalRatings = buySum?.let { sellSum?.plus(it) } ?: sellSum
 
-        // Recommendation Trend Data
-        val recommendationTrend = try {
-            result?.getJSONObject("recommendationTrend")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonObject("recommendationTrend")
-        }
-        val trend = try {
-            recommendationTrend?.getJSONArray("trend")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonArray("trend")
-        }
-        val latestTrend = try {
-            trend?.getJSONObject(0)
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonObject("0m")
-        }
-        val strongBuy = latestTrend?.getInt("strongBuy") // todo move into try catch
-        val buy = latestTrend?.getInt("buy")
-        val hold = latestTrend?.getInt("hold")
-        val sell = latestTrend?.getInt("sell")
-        val strongSell = latestTrend?.getInt("strongSell")
-        if (strongBuy != null && buy != null && hold != null && sell != null && strongSell != null) {
-            val totalBuy = strongBuy + buy
-            val totalSell = strongSell + sell
-            val total = totalBuy + totalSell + hold
-            val analystData = if (total != 0) {
-                mapOf(
-                    getString(R.string.default_buy) to listOf(totalBuy, (totalBuy * 100) / total),
-                    getString(R.string.advancedStock_analystRatings_hold) to listOf(
-                        hold,
-                        (hold * 100) / total
-                    ),
-                    getString(R.string.default_sell) to listOf(totalSell, (totalSell * 100) / total)
+                val analystData = mapOf(
+                    getString(R.string.default_buy) to totalRatings?.let { ntr -> (buySum?.times(100))?.div(ntr)?.let { AnalystData(buySum, it) } },
+                    getString(R.string.advancedStock_analystRatings_hold) to totalRatings?.let { ntr -> (hold?.times(100))?.div(ntr)?.let { AnalystData(hold, it) } },
+                    getString(R.string.default_sell) to totalRatings?.let { ntr -> (sellSum?.times(100))?.div(ntr)?.let { AnalystData(sellSum, it) } }
                 )
-            } else {
-                null
-            }
-            val analystDataKeys = analystData?.keys?.toList()
-            val analystDataValues = analystData?.values?.toList()
-            val percentageList = mutableListOf<Int>()
-            if (analystDataKeys != null && analystDataValues != null) {
-                for (i in analystDataKeys.indices) {
-                    val percentage = analystDataValues[i][1]
-                    val text = "${analystDataKeys[i]}: ${analystDataValues[i][0]} ($percentage%)"
-                    activity?.apply {
-                        findViewById<TextView>(AdvancedStockLayoutIDs.analystRatingsTextViews[i])?.text =
-                            text
-                        findViewById<ProgressBar>(AdvancedStockLayoutIDs.analystRatingsProgressBars[i])?.progress =
-                            percentage
-                        percentageList.add(percentage)
-                    }
+
+                analystData.onEachIndexed { index, entry ->
+                    activity?.findViewById<TextView>(AdvancedStockLayoutIDs.analystRatingsTextViews[index])?.text =
+                        "${entry.key}: ${entry.value?.amount} (${entry.value?.percentage}%)"
+                    entry.value?.percentage?.let { activity?.findViewById<ProgressBar>(AdvancedStockLayoutIDs.analystRatingsProgressBars[index])?.progress = it }
                 }
-                val largestPercentage = percentageList.maxOrNull()
-                if (largestPercentage != null) {
-                    val largestItem = analystDataKeys[percentageList.indexOf(largestPercentage)]
-                    activity?.apply {
-                        findViewById<TextView>(R.id.advancedStockFragment_analystRating_rating_textView)?.text =
-                            largestItem
-                        findViewById<TextView>(R.id.advancedStockFragment_analystRating_circle_percentage_textView)?.text =
-                            "$largestPercentage%"
-                    }
-                }
-                activity?.findViewById<TextView>(R.id.advancedStockFragment_analystRating_circle_total_textView)?.text =
-                    "$total total ratings"
-            } else {
-                for (i in AdvancedStockLayoutIDs.analystRatingsTextViews) {
-                    activity?.findViewById<TextView>(i)?.text = getString(R.string.default_na)
-                }
-                for (i in AdvancedStockLayoutIDs.analystRatingsProgressBars) {
-                    activity?.findViewById<ProgressBar>(i)?.progress = 0
+
+                val filteredAnalystData = analystData.filterNotNullValues()
+                val highestPercent = filteredAnalystData.maxByOrNull { it.value.percentage }
+
+                activity?.apply {
+                    findViewById<TextView>(R.id.advancedStockFragment_analystRating_rating_textView)?.text = highestPercent?.key
+                    findViewById<TextView>(R.id.advancedStockFragment_analystRating_circle_percentage_textView)?.text = "${highestPercent?.value?.percentage}%"
+                    findViewById<TextView>(R.id.advancedStockFragment_analystRating_circle_total_textView)?.text = "$totalRatings total ratings"
                 }
             }
-        } else {
-            Log.e(TAG, "Analyst Data not available. Removing layout.")
-            activity?.findViewById<ConstraintLayout>(R.id.advancedStockFragment_analystRating_constraintLayout)?.visibility =
-                View.GONE
+        } ?: run {
+            activity?.findViewById<ConstraintLayout>(R.id.advancedStockFragment_analystRating_constraintLayout)?.hide()
         }
     }) { error ->
-        Log.e(
-            TAG,
-            "Volley Error while getting analyst data. Removing Layout.\n${error.stackTraceToString()}"
-        )
-        activity?.findViewById<ConstraintLayout>(R.id.advancedStockFragment_analystRating_constraintLayout)?.visibility =
-            View.GONE
+
     }
 
     private fun getNewsDataRequest() = apiInterface.getSymbolNewsData({ response ->
         Log.d(TAG, "NewsDataRequest [SUCCESS]")
 
         newsList.clear()
-        val items = try {
-            response.getJSONArray("items")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonArray("items")
-        }
+        response.getElement<JSONArray>("items")?.toList<JSONObject>()?.forEach { items ->
+            items?.apply {
+                val title = getElement<String>("title")
+                val pubDate = getElement<String>("pubDate")
+                val link = getElement<String>("link")
+                val content = getElement<String>("content")?.let {
+                    HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+                }
 
-        if (items != null) {
-            for (i in 0 until items.length()) {
-                try {
-                    val newsElement = items.getJSONObject(i)
-                    newsElement.apply {
-                        val title = getString("title")
-                        val publishDate = getString("pubDate")
-                        val link = getString("link")
-                        val content = HtmlCompat.fromHtml(
-                            getString("content"),
-                            HtmlCompat.FROM_HTML_MODE_LEGACY
-                        ).toString()
-                        newsList.add(NewsResponseData(title, publishDate, link, content))
-                    }
-                } catch (error: JSONException) {
-                    JSONExceptionHandler.jsonObject("item $i")
-                } catch (error: NullPointerException) {
-                    JSONExceptionHandler.jsonObject("item $i")
+                if (title != null && pubDate != null && link != null && content != null) {
+                    newsList.add(NewsResponseData(title, pubDate, link, content))
                 }
             }
         }
+
         if (newsList.size == 0) {
             newsList.add(null)
         }
@@ -763,30 +633,14 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
 
     private fun getFinancialDataRequest() = apiInterface.finance({ response ->
         financialDataRequestCount++
-        Log.d(TAG, "[REQUEST] Code 200. Request for $symbol Count: $financialDataRequestCount.")
 
-        val result = try {
-            response.getJSONObject("quoteSummary")
-                .getJSONArray("result")[0] as JSONObject
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonObject("result")
-        } catch (error: NullPointerException) {
-            JSONExceptionHandler.jsonObject("result")
-        }
-        val financialData = try {
-            result?.getJSONObject("financialData")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonObject("financialData")
-        }
+        val financialDataResponse = response.parseFinanceResponse()
 
-        currentMarketPrice = try {
-            financialData?.getJSONObject("currentPrice")?.getDouble("raw")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.double("currentRawPrice")
-        }
-        setPrice()
-        if (currentMarketPrice != null && chartPreviousClose != null) {
-            change = calculateChange(currentMarketPrice!!, chartPreviousClose!!)
+        currentMarketPrice = financialDataResponse?.currentPrice?.raw
+        updatePrice()
+
+        if (currentMarketPrice != null && previousClosePrice != null) {
+            change = calculateChange(currentMarketPrice!!, previousClosePrice!!)
             percentage = calculatePercentage(change!!, currentMarketPrice!!)
 
             setChange()
@@ -801,21 +655,17 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
                     }
             }
 
-            sparkData.apply {
-                yData[yData.size - 1] = currentMarketPrice!!
-                sparkDataNotifyChanged(false)
-            }
+            /* TODO fix l8ter supposed to update data
+        sparkData.apply {
+            yData[yData.size - 1] = currentMarketPrice!!
+            sparkDataNotifyChanged(false)
+        }*/
         }
 
-        val oneYearTargetEstimate = try {
-            financialData?.getJSONObject("targetMeanPrice")
-                ?.getDouble("raw")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.double("oneYearTargetEstimateRawPrice")
-        }
-        activity?.findViewById<TickerView>(R.id.advancedStockFragment_quickStatistics_oneYearTargetEst_tickerView)
-            ?.setText(formatNullableDoubleWithDollar(oneYearTargetEstimate), true)
-    }, {
+        val oneYearTargetEstimate = financialDataResponse?.targetMeanPrice?.raw
+
+        activity?.findViewById<TickerView>(R.id.advancedStockFragment_quickStatistics_oneYearTargetEst_tickerView)?.setText(formatDoubleDollar(oneYearTargetEstimate), true)
+    }, { error -> // todo build custom log function
         financialDataRequestErrorCount++
     })
 
@@ -827,201 +677,73 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
         historicalDataRequestCount++
         Log.d(TAG, "HistoricalDataRequest [SUCCESS] Count: $historicalDataRequestCount")
 
-        val result = try {
-            response.getJSONObject("chart")
-                .getJSONArray("result")[0] as JSONObject
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonObject("result")
-        }
-        val meta = try {
-            result?.getJSONObject("meta")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonObject("meta")
-        }
-        val quote = try {
-            result?.getJSONObject("indicators")
-                ?.getJSONArray("quote")?.get(0) as JSONObject
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonObject("quote")
-        }
-        chartPreviousClose = try {
-            meta?.getDouble("chartPreviousClose")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.double("chartPreviousClose")
-        }
-        activity?.findViewById<TickerView>(R.id.advancedStockFragment_quickStatistics_chartPreviousClose_tickerView)
-            ?.setText(formatNullableDoubleWithDollar(chartPreviousClose), true)
+        response.parseHistoricalData()?.apply {
+            meta?.apply {
+                previousClosePrice = chartPreviousClose
+                // todo create updateTickerFunction in MarketInterface
+                activity?.findViewById<TickerView>(R.id.advancedStockFragment_quickStatistics_chartPreviousClose_tickerView)?.setText(formatDoubleDollar(chartPreviousClose), true)
 
-        if (firstTime || !financialDataRequestEnabled) {
-            currentMarketPrice = try {
-                meta?.getDouble("regularMarketPrice")
-            } catch (error: JSONException) {
-                JSONExceptionHandler.double("currentMarketPrice")
-            }
-            setPrice()
+                if (firstTime || !financialDataRequestEnabled) {
+                    currentMarketPrice = regularMarketPrice
+                    change = calculateChange(currentMarketPrice, chartPreviousClose)
 
-            change = currentMarketPrice?.let {
-                chartPreviousClose?.let { it1 ->
-                    calculateChange(
-                        it,
-                        it1
-                    )
-                }
-            }
-            percentage =
-                change?.let { currentMarketPrice?.let { it1 -> calculatePercentage(it, it1) } }
+                    updatePrice()
+                    setChange()
 
-            setChange()
-
-            val assumedColor = getRawColor(change!!)
-            if (polarityColor != assumedColor) {
-                setPolarityTheme(assumedColor)
-                activity?.findViewById<ImageView>(R.id.advancedStockFragment_change_imageView)
-                    ?.apply {
-                        setImageDrawable(context?.let { getChangeDrawable(it, change!!) })
-                        (drawable as AnimatedVectorDrawable).start()
+                    // Ranges Logic
+                    AdvancedStockLayoutIDs.timeRanges.forEach { (key, value) ->
+                        activity?.findViewById<TextView>(value)?.visibility = if (validRanges?.contains(key) == true) {
+                            View.VISIBLE
+                        } else {
+                            View.GONE
+                        }
                     }
-            }
+                }
 
-            // Logic for valid ranges (removes unavailable ranges)
-            val validRanges = try {
-                meta?.getJSONArray("validRanges")
-            } catch (error: JSONException) {
-                JSONExceptionHandler.jsonArray("validRanges")
-            }
-            val validRangesList = mutableListOf<String>()
-            if (validRanges != null) {
-                for (i in 0 until validRanges.length()) {
-                    validRangesList.add(validRanges.getString(i))
+                // Padding Setter
+                val timeZone = ZoneId.of(exchangeTimezoneName)
+                val currentEpochTime = ZonedDateTime.now(timeZone).toInstant().epochSecond
+                val preStart = currentTradingPeriod?.pre?.start
+                val postEnd = currentTradingPeriod?.post?.end
+                if (preStart != null && postEnd != null && currentEpochTime < postEnd) {
+                    val elapsedTime = currentEpochTime - preStart
+                    val totalElapsedTime = postEnd - preStart
+                    val timeElapsedRatio = elapsedTime.toDouble() / totalElapsedTime.toDouble()
+
+                    activity?.findViewById<SparkView>(R.id.advancedStockFragment_chart_sparkView)?.apply {
+                        val elapsedToPadding = width - (width * timeElapsedRatio)
+                        setPadding(paddingLeft, paddingTop, elapsedToPadding.roundToInt(), paddingBottom)
+                    }
                 }
             }
-            for (i in AdvancedStockLayoutIDs.timeRanges) {
-                val textView = activity?.findViewById<TextView>(i.value)
-                textView?.visibility = if (validRangesList.contains(i.key)) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
+
+            indicators?.quote?.apply {
+                quoteData = this
+                val totalVolume = volume?.filterNotNull()?.sum()
+                val formattedVolume = formatLargeNumber(totalVolume)
+                activity?.findViewById<TickerView>(R.id.advancedStockFragment_quickStatistics_volume_tickerView)?.setText(formattedVolume, true)
+
+                val filteredClose = close?.filterNotNull()
+
+                sparkData.apply {
+                    yData = filteredClose ?: listOf()
+                    chartPreviousClose = previousClosePrice ?: 0.0
                 }
-            }
-        }
+                sparkDataNotifyChanged(animate)
 
-        // Set Padding based off time
-        val givenTimezone = try {
-            meta?.getString("exchangeTimezoneName")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.string("exchangeTimezoneName")
-        }
-        val timeZone = ZoneId.of(givenTimezone) // Note: Returns GMT if cannot parse
-        val tradingPeriods = try {
-            meta?.getJSONObject("tradingPeriods")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonObject("tradingPeriods")
-        }
-        val startingEpoch = try {
-            tradingPeriods?.getJSONArray("pre")?.getJSONArray(0)?.getJSONObject(0)?.getLong("start")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.long("startingEpoch")
-        }
-        val endingEpoch = try {
-            val post = tradingPeriods?.getJSONArray("post")
-            post?.getJSONArray(post.length() - 1)?.getJSONObject(0)?.getLong("end")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.long("endingEpoch")
-        }
-        val currentEpochTime = ZonedDateTime.now(timeZone).toInstant().epochSecond
-        if (startingEpoch != null && endingEpoch != null && currentEpochTime < endingEpoch) {
-            val timePassed = currentEpochTime - startingEpoch
-            val totalTime = endingEpoch - startingEpoch
-            val dayRatio = timePassed.toDouble() / totalTime.toDouble()
-            Log.i(
-                TAG,
-                "Current Padding Day Ratio: $dayRatio. Start: $startingEpoch, Current: $currentEpochTime, End: $endingEpoch. Calculated Time Passed: $timePassed, Calculated Total Time: $totalTime"
-            )
-            activity?.findViewById<SparkView>(R.id.advancedStockFragment_chart_sparkView)?.apply {
-                val paddingRight = width - round(width * dayRatio)
-                setPadding(paddingLeft, paddingTop, paddingRight.toInt(), paddingBottom)
-            }
-        }
-
-        val volumeData = try {
-            quote?.getJSONArray("volume")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonArray("volume")
-        } // TODO implement candlestick/oplc charts
-        val highData = try {
-            quote?.getJSONArray("high")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonArray("high")
-        }
-        val closeData = try {
-            quote?.getJSONArray("close")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonArray("close")
-        }
-        val lowData = try {
-            quote?.getJSONArray("low")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonArray("low")
-        }
-        val openData = try {
-            quote?.getJSONArray("open")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonArray("open")
-        }
-
-        val volumeDataList = mutableListOf<Long>()
-        val highDataList = mutableListOf<Double>()
-        val closeDataList = mutableListOf<Double>()
-        val lowDataList = mutableListOf<Double>()
-        val openDataList = mutableListOf<Double>()
-
-        if (volumeData != null) {
-            for (i in 0 until volumeData.length()) {
-                try {
-                    val volume = volumeData.getLong(i)
-                    volumeDataList.add(volume)
-                } catch (error: JSONException) {
-                    Log.e(TAG, "Volume null element found at position $i")
+                val chartLow = formatDoubleDollar(filteredClose?.minOrNull())
+                val chartHigh = formatDoubleDollar(filteredClose?.maxOrNull())
+                activity?.apply {
+                    findViewById<TickerView>(R.id.advancedStockFragment_quickStatistics_chartHigh_tickerView).setText(chartHigh, true)
+                    findViewById<TickerView>(R.id.advancedStockFragment_quickStatistics_chartLow_tickerView).setText(chartLow, true)
                 }
-            }
-            activity?.findViewById<TickerView>(R.id.advancedStockFragment_quickStatistics_volume_tickerView)
-                ?.setText(formatLargeNumber(volumeDataList.sum().toDouble()), true)
-        }
-        if (closeData != null) {
-            sparkData.yData.clear()
-            for (i in 0 until closeData.length()) {
-                try {
-                    sparkData.yData.add(closeData.getDouble(i))
-                    closeDataList.add(closeData.getDouble(i))
-                } catch (error: JSONException) {
-                    Log.e(TAG, "CloseData null element found at position $i")
-                }
-            }
-            chartPreviousClose?.let { sparkData.chartPreviousClose = it }
-            sparkDataNotifyChanged(animate)
 
-            val sortedCloseData = closeDataList.sorted()
-            val chartLow = try {
-                sortedCloseData.first()
-            } catch (error: NoSuchElementException) {
-                null
-            }
-            val chartHigh = try {
-                sortedCloseData.last()
-            } catch (error: NoSuchElementException) {
-                null
+            } ?: run {
+                quoteData = Quote(null, null, null, null, null)
             }
 
-            activity?.apply {
-                findViewById<TickerView>(R.id.advancedStockFragment_quickStatistics_chartHigh_tickerView).setText(
-                    formatNullableDoubleWithDollar(chartHigh),
-                    true
-                )
-                findViewById<TickerView>(R.id.advancedStockFragment_quickStatistics_chartLow_tickerView).setText(
-                    formatNullableDoubleWithDollar(chartLow),
-                    true
-                )
-            }
+        } ?: run {
+
         }
 
     }, { error ->
@@ -1039,16 +761,16 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
         }
     }
 
-    private fun setPrice() {
+    private fun updatePrice() {
         activity?.findViewById<TickerView>(R.id.advancedStockFragment_price_tickerView)
-            ?.setText(formatNullableDoubleWithDollar(currentMarketPrice), true)
+            ?.setText(formatDoubleDollar(currentMarketPrice), true)
         activity?.findViewById<TickerView>(R.id.advancedStockFragment_floatingScrollView_price_tickerView)
-            ?.setText(formatNullableDoubleWithDollar(currentMarketPrice), true)
+            ?.setText(formatDoubleDollar(currentMarketPrice), true)
     }
 
     private fun setChange() {
-        val changeText = "${formatNullableDoubleWithDollar(change?.let { abs(it) })} (${
-            formatNullableDouble(percentage?.let { abs(it) })
+        val changeText = "${formatDoubleDollar(change?.let { abs(it) })} (${
+            formatDouble(percentage?.let { abs(it) })
         }%)"
 
         activity?.findViewById<TickerView>(R.id.advancedStockFragment_change_tickerView)
@@ -1058,11 +780,11 @@ class AdvancedStockFragment : Fragment(), FragmentTransactions, MarketInterface,
     }
 
     private fun updateBubbleCharts(interpretedColor: Int) {
-        val actualEarningsSet = BubbleDataSet(actualEarningsList, "").apply {
+        val actualEarningsSet = BubbleDataSet(rawEpsActualList, "").apply {
             isNormalizeSizeEnabled = false
             color = interpretedColor
         }
-        val estimateEarningsSet = BubbleDataSet(estimateEarningsList, "").apply {
+        val estimateEarningsSet = BubbleDataSet(rawEpsEstimateList, "").apply {
             isNormalizeSizeEnabled = false
             setColor(interpretedColor, 155)
         }

@@ -12,13 +12,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.marketfinance.app.R
-import com.marketfinance.app.utils.RequestSingleton
+import com.marketfinance.app.utils.network.JSONObjectWrapper.Companion.getElement
+import com.marketfinance.app.utils.network.RequestSingleton
 import com.marketfinance.app.utils.security.EncryptedPreference
 
 class SplashActivity : AppCompatActivity() {
 
     private var networkAvailable: Boolean? = null
-    private val tag = "SplashActivity"
+    private val TAG = "SplashActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,12 +55,11 @@ class SplashActivity : AppCompatActivity() {
                 "https://api.ipify.org?format=json",
                 null,
                 { response ->
-                    Log.i(tag, "Connection Found. IP: ${response.getString("ip")}")
+                    Log.i(TAG, "Connection Found. IP: ${response.getElement<String>("ip")}")
                     networkAvailable = true
                 },
-                {
-                    Log.e(tag, "No Connection Found.")
-                    it.printStackTrace()
+                { error ->
+                    Log.e(TAG, "No Connection Found.", error)
                     networkAvailable = false
                 })
             queue.addToRequestQueue(connectionCheckRequest)
@@ -74,7 +74,7 @@ class SplashActivity : AppCompatActivity() {
                 val intent = Intent(this, MainActivity()::class.java)
                 if (!userData.getBoolean("completedOnboarding", false)) {
                     Log.i(
-                        tag,
+                        TAG,
                         "completedOnboarding value is false. Adding intent \"promptOnboard\" and value is set to \"true\"."
                     )
                     intent.putExtra("promptOnboard", true)

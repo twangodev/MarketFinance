@@ -17,9 +17,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.marketfinance.app.R
 import com.marketfinance.app.ui.fragments.advancedStockFragment.ValidIntervals
 import com.marketfinance.app.utils.Calculations
-import com.marketfinance.app.utils.RequestSingleton
-import com.marketfinance.app.utils.network.APIInterface
-import com.marketfinance.app.utils.objects.Defaults
+import com.marketfinance.app.utils.Defaults
+import com.marketfinance.app.utils.network.APIWrapper
+import com.marketfinance.app.utils.network.RequestSingleton
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -126,7 +126,7 @@ class SearchFragment : Fragment(), Calculations {
                         val symbol = element.getString("symbol")
                         val name = element.getString("shortname")
                         queue.addToRequestQueue(
-                            APIInterface( // TODO move as global var
+                            APIWrapper( // TODO move as global var
                                 symbol,
                                 ValidIntervals.Spark.ONE_DAY
                             ).spark({ innerResponse -> // TODO wrap each get in try catch [JSONException]
@@ -138,17 +138,20 @@ class SearchFragment : Fragment(), Calculations {
                                 val change = calculateChange(currentPrice, previousClose)
                                 val percentage = calculatePercentage(change, currentPrice)
 
-                                searchResults.add(
-                                    SearchResultData(
-                                        symbol,
-                                        quoteType,
-                                        name,
-                                        currentPrice,
-                                        change,
-                                        percentage,
-                                        null
+                                if (change != null && percentage != null) {
+                                    searchResults.add(
+                                        SearchResultData(
+                                            symbol,
+                                            quoteType,
+                                            name,
+                                            currentPrice,
+                                            change,
+                                            percentage,
+                                            null
+                                        )
                                     )
-                                )
+
+                                }
 
                                 activity?.findViewById<RecyclerView>(R.id.search_searchResults_recyclerView)
                                     ?.apply {

@@ -1,4 +1,4 @@
-package com.marketfinance.app.utils
+package com.marketfinance.app.utils.network
 
 import android.annotation.SuppressLint
 import android.content.Context

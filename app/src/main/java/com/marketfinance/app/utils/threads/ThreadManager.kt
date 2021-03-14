@@ -1,7 +1,6 @@
 package com.marketfinance.app.utils.threads
 
 import android.util.Log
-import java.lang.IllegalStateException
 
 class ThreadManager {
 
@@ -29,7 +28,7 @@ class ThreadManager {
             try {
                 thread.start()
             } catch (error: IllegalThreadStateException) {
-                Log.e(TAG, "Unable to start thread. Thread is probably all ready running")
+                Log.e(TAG, "Unable to start thread. Thread is probably all ready running", error)
             }
 
         }
