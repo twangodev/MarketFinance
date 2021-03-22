@@ -13,7 +13,7 @@ interface SearchWrapper {
          */
         private const val crumb = "kX5Fok7uhP5"
 
-        private val searchURL = "https://finance.yahoo.com/_finance_doubledown/api/resource?crumb=$crumb"
+        private const val searchURL = "https://finance.yahoo.com/_finance_doubledown/api/resource?crumb=$crumb"
 
         private object Headers {
 
