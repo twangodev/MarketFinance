@@ -15,7 +15,7 @@ class RequestSingleton(val context: Context) {
 
     companion object {
 
-        private val TAG = "RequestSingleton"
+        private const val TAG = "RequestSingleton"
 
         @SuppressLint("StaticFieldLeak")
         @Volatile
@@ -36,8 +36,8 @@ class RequestSingleton(val context: Context) {
         Volley.newRequestQueue(context.applicationContext)
     }
 
-    fun <T> addToRequestQueue(req: Request<T>) {
-        requestQueue.add(req)
+    fun <T> addToRequestQueue(request: Request<T>) {
+        requestQueue.add(request)
     }
 
 
