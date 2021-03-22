@@ -21,16 +21,15 @@ object ValidIntervals {
      */
     object Spark {
 
+        val ONE_DAY = RangeIntervalData("1d", "2m")
 
-        val ONE_DAY = RangeIntervalData("1d", "1m")
-
-        val FIVE_DAY = RangeIntervalData("5d", "5m")
+        val FIVE_DAY = RangeIntervalData("5d", "15m")
 
         val ONE_MONTH = RangeIntervalData("1mo", "30m")
 
         val THREE_MONTH = RangeIntervalData("3mo", "1h")
 
-        val ONE_YEAR = RangeIntervalData("1y", "1h")
+        val ONE_YEAR = RangeIntervalData("1y", "1d")
 
     }
 
