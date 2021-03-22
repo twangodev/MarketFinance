@@ -12,7 +12,7 @@ interface Calculations {
      * Calculate the difference between two values [currentMarketPrice] and [previousClosePrice]
      * @param currentMarketPrice Current Price to compare to
      * @param previousClosePrice Previous Price to compare
-     * @return [Double] or `null`
+     * @return [Double] or `null`. Return can be cast as non-nullable if [currentMarketPrice] and [previousClosePrice] are not `null`
      */
     fun calculateChange(currentMarketPrice: Double?, previousClosePrice: Double?): Double? {
         return if (currentMarketPrice != null && previousClosePrice != null) {
@@ -23,6 +23,13 @@ interface Calculations {
         }
     }
 
+    /**
+     * Calculate percentage with [change] and [currentMarketPrice]
+     *
+     * @param change The change calculated using [calculateChange]
+     * @param currentMarketPrice Current Price to compare to
+     * @return [Double] or `null`. Return can be cast as non-nullable if [change] and [currentMarketPrice] are not `null`
+     */
     fun calculatePercentage(change: Double?, currentMarketPrice: Double?): Double? {
         return if (change != null && currentMarketPrice != null) {
             try {
