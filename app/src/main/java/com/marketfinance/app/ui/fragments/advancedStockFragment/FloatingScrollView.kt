@@ -16,7 +16,6 @@ class FloatingScrollView(
 
     private val scrollThreshold = 1325
     private var active = false
-    private var firstTime = true
 
     init {
         getConstraintLayout()?.apply {
@@ -35,9 +34,7 @@ class FloatingScrollView(
         fillAfter = true
     }
 
-    private fun getConstraintLayout() =
-        activity?.findViewById<ConstraintLayout>(R.id.advancedStockFragment_floatingScrollView_constraintLayout)
-
+    private fun getConstraintLayout() = activity?.findViewById<ConstraintLayout>(R.id.advancedStockFragment_floatingScrollView_constraintLayout)
 
     val listener = ViewTreeObserver.OnScrollChangedListener {
         val currentPosition = scrollView?.scrollY
