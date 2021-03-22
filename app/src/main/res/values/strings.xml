@@ -10,11 +10,13 @@
     <string name="default.name">NAME</string>
     <string name="default.na">N/A</string>
     <string name="default.details">NAME • TYPE</string>
+    <string name="default.number">0</string>
     <string name="default.price">$0.00</string>
     <string name="default.double">0.00</string>
     <string name="default.percentage">0%</string>
     <string name="default.doublePercentage">0.00%</string>
     <string name="default.change">$0.00 (0.00%)</string>
+    <string name="default.time">01/01/0000 0:00 AM</string>
     <string name="default.bidAsk">$0.00 x 0</string>
     <string name="default.range">$0.00 - $0.00</string>
     <string name="default.manage">Manage</string>
@@ -53,6 +55,12 @@
     <string name="search.error.emptyQuery">Empty Query</string>
     <string name="search.error.noResults">No Results Found</string>
 
+    <string name="advancedStock.chart.details.open">Open</string>
+    <string name="advancedStock.chart.details.high">High</string>
+    <string name="advancedStock.chart.details.low">Low</string>
+    <string name="advancedStock.chart.details.close">Close</string>
+    <string name="advancedStock.chart.details.volume">Volume</string>
+    <string name="advancedStock.chart.details.time">Time</string>
     <string name="advancedStock.timeRangeSelector.ONE_DAY">1D</string>
     <string name="advancedStock.timeRangeSelector.FIVE_DAY">5D</string>
     <string name="advancedStock.timeRangeSelector.ONE_MONTH">1M</string>
@@ -63,7 +71,6 @@
     <string name="advancedStock.quickStatistics.bid">Bid</string>
     <string name="advancedStock.quickStatistics.ask">Ask</string>
     <string name="advancedStock.quickStatistics.previousClose">Previous Close</string>
-    <string name="advancedStock.quickStatistics.volume">Volume</string>
     <string name="advancedStock.quickStatistics.peRatio">P/E Ratio (TTM)</string>
     <string name="advancedStock.quickStatistics.dividend">Dividend</string>
     <string name="advancedStock.quickStatistics.eps">EPS (TTM)</string>

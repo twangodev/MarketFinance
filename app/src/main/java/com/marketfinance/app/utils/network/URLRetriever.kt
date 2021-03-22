@@ -38,7 +38,6 @@ interface URLRetriever {
     fun getQuoteSummaryURL(symbol: String) =
         "https://query1.finance.yahoo.com/v10/finance/quoteSummary/$symbol?modules=assetProfile,earningsHistory,recommendationTrend"
 
-
     /**
      * Retrieves news data using an RSS to JSON API
      *

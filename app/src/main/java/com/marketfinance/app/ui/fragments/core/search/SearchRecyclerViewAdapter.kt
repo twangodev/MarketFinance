@@ -35,8 +35,7 @@ class SearchRecyclerViewAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val clickLayer: ConstraintLayout =
-            view.findViewById(R.id.searchResults_clickLayer_contraintLayout)
+        val clickLayer: ConstraintLayout = view.findViewById(R.id.searchResults_clickLayer_contraintLayout)
         val symbolTextView: TextView = view.findViewById(R.id.searchResults_symbol_textView)
         val detailsTextView: TextView = view.findViewById(R.id.searchResults_details_textView)
         val priceTickerView: TickerView = view.findViewById(R.id.searchResults_price_tickerView)

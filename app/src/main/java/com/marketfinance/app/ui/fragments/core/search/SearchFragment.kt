@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.marketfinance.app.R
@@ -20,10 +19,10 @@ import com.marketfinance.app.utils.Calculations
 import com.marketfinance.app.utils.Defaults
 import com.marketfinance.app.utils.network.APIWrapper
 import com.marketfinance.app.utils.network.RequestSingleton
-import org.json.JSONException
-import org.json.JSONObject
+import com.marketfinance.app.utils.network.SearchWrapper
+import com.marketfinance.app.utils.network.parser.JSONObjectParser
 
-class SearchFragment : Fragment(), Calculations {
+class SearchFragment : Fragment(), Calculations, JSONObjectParser, SearchWrapper {
 
     private val TAG = "SearchFragment"
 
@@ -54,8 +53,6 @@ class SearchFragment : Fragment(), Calculations {
         activity?.findViewById<BottomNavigationView>(R.id.main_bottomNavigationView)?.menu?.findItem(
             R.id.menu_bottomNavigationView_search
         )?.isChecked = true
-
-        val queue = context?.let { RequestSingleton.getInstance(it) }
 
         searchResults.clear()
         searchResults.add(
@@ -95,8 +92,8 @@ class SearchFragment : Fragment(), Calculations {
                                 scheduleLayoutAnimation()
                             }
                     } else {
-                        if (newText != null && queue != null) {
-                            performSearchQuery(newText, queue)
+                        if (newText != null) {
+                            performSearchQuery(newText)
                         }
                     }
                     return true
@@ -110,9 +107,78 @@ class SearchFragment : Fragment(), Calculations {
         }
     }
 
-    private fun performSearchQuery(query: String, queue: RequestSingleton) {
+    private data class SymbolDetails(
+        val symbol: String,
+        val type: String
+    )
 
-        val url = "https://query1.finance.yahoo.com/v1/finance/search?q=$query"
+    /**
+     * Handles and animates the [RecyclerView]
+     */
+    private fun layoutDataChanged() {
+        activity?.findViewById<RecyclerView>(R.id.search_searchResults_recyclerView)?.apply {
+            adapter?.notifyDataSetChanged()
+            scheduleLayoutAnimation()
+        }
+    }
+
+    /**
+     * Handles Errors thrown from [JsonObjectRequest] relative to search
+     *
+     * @param message A custom message for the most likely reason
+     * @param error The [Throwable] from the [JsonObjectRequest]
+     */
+    private fun produceError(message: String, error: Throwable) {
+        Log.d(TAG, message, error)
+        searchResults.add(
+            SearchResultData(
+                null, "", "", 0.00, 0.00, 0.00,
+                message
+            )
+        )
+        layoutDataChanged()
+    }
+
+
+    private fun performSearchQuery(query: String) {
+        val queue = context?.let { RequestSingleton.getInstance(it) }
+        searchResults.clear()
+        context?.let { RequestSingleton.getInstance(it) }?.addToRequestQueue(
+            createSearch(query, { searchResponse ->
+                val items = searchResponse.parseSearchDataResponse()?.items
+                items?.forEach { item ->
+                    if (item?.symbol != null && item.typeDisp != null && item.name != null && item.typeDisp in Defaults.searchQuoteTypeFilters) {
+                        queue?.addToRequestQueue(APIWrapper(item.symbol, ValidIntervals.Spark.ONE_DAY).spark({ sparkResponse ->
+                            sparkResponse.parseSparkResponse()?.historicalData?.meta?.apply {
+                                if (regularMarketPrice != null && chartPreviousClose != null) {
+                                    val change = calculateChange(regularMarketPrice, chartPreviousClose)!!
+                                    searchResults.add(
+                                        SearchResultData(
+                                            item.symbol, item.typeDisp, item.name, regularMarketPrice,
+                                            change, calculatePercentage(change, regularMarketPrice)!!, null
+                                        )
+                                    )
+                                    layoutDataChanged()
+                                }
+                            }
+                        }, { error ->
+                            produceError(getString(R.string.default_error_server), error)
+                        }))
+                    }
+                }
+                if (items?.size == 0) {
+                    val errorMessage = getString(R.string.search_error_noResults)
+                    produceError(errorMessage, Error(errorMessage))
+                }
+
+            }, { error ->
+                produceError(getString(R.string.default_error_connection), error)
+            })
+        )
+
+
+        /*
+        val url = "https://query$serverNumber.finance.yahoo.com/v1/finance/search?q=$query"
         val request = JsonObjectRequest(Request.Method.GET, url, null, { response ->
             Log.d(TAG, "Search Query API responded $response")
             searchResults.clear()
@@ -222,9 +288,10 @@ class SearchFragment : Fragment(), Calculations {
                 scheduleLayoutAnimation()
             }
             error.printStackTrace()
+            serverNumber = 2
         })
         queue.addToRequestQueue(request)
-
+*/
     }
 
 }
