@@ -46,9 +46,10 @@ import com.robinhood.spark.animation.LineSparkAnimator
 import com.robinhood.ticker.TickerView
 import org.json.JSONArray
 import org.json.JSONObject
+import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
-import java.util.*
+import java.time.format.DateTimeFormatter
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -61,6 +62,7 @@ class AdvancedStockFragment : Calculations, Fragment(), FragmentTransactions, Ma
     private val apiInterface = APIWrapper("", ValidIntervals.Spark.ONE_DAY)
 
     private var queue: RequestSingleton? = null
+    private var zoneID: ZoneId? = null
     private var paused = false
     private var jsonData = ""
     private var symbol = ""
@@ -72,6 +74,7 @@ class AdvancedStockFragment : Calculations, Fragment(), FragmentTransactions, Ma
     private var percentage: Double? = null
     private var sparkData = SparkViewData(mutableListOf(), 0.00)
     private var quoteData = Quote(null, null, null, null, null)
+    private var timeStampData = listOf<Long?>()
     private var financialDataRequestCount = 0
     private var financialDataRequestErrorCount = 0
     private var financialDataRequestErrorLimit = 10
@@ -175,16 +178,47 @@ class AdvancedStockFragment : Calculations, Fragment(), FragmentTransactions, Ma
 
                     val index = rawIndex as Int
 
-                    val
+                    val time = timeStampData[index]
+                    val openPrice = quoteData.open?.get(index)
+                    val highPrice = quoteData.high?.get(index)
+                    val lowPrice = quoteData.low?.get(index)
+                    val closePrice = quoteData.close?.get(index)
+                    val volume = quoteData.volume?.get(index)
+
+                    val dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yy hh:mm a")
+
+                    val indexedZoneDateTime = ZonedDateTime.ofInstant(time?.let { Instant.ofEpochSecond(it) }, zoneID)
+                    val localZonedDateTime = indexedZoneDateTime.withZoneSameInstant(ZoneId.systemDefault())
+                    val formattedLocalZonedDateTime = localZonedDateTime.format(dateTimeFormatter)
+
+                    val formattedOpen = formatDoubleDollar(openPrice)
+                    val formattedHigh = formatDoubleDollar(highPrice)
+                    val formattedLow = formatDoubleDollar(lowPrice)
+                    val formattedClose = formatDoubleDollar(closePrice)
+                    val formattedVolume = formatLargeNumber(volume)
+
+                    activity?.apply {
+                        findViewById<ConstraintLayout>(R.id.advancedStockFragment_chart_details_constraintLayout).show()
+
+                        findViewById<TextView>(R.id.advancedStockFragment_chart_details_left_open_textView)?.text = formattedOpen
+                        findViewById<TextView>(R.id.advancedStockFragment_chart_details_right_high_textView)?.text = formattedHigh
+                        findViewById<TextView>(R.id.advancedStockFragment_chart_details_left_low_textView)?.text = formattedLow
+                        findViewById<TextView>(R.id.advancedStockFragment_chart_details_right_close_textView)?.text = formattedClose
+                        findViewById<TextView>(R.id.advancedStockFragment_chart_details_left_volume_textView)?.text = formattedVolume
+                        findViewById<TextView>(R.id.advancedStockFragment_chart_details_right_time_textView)?.text = formattedLocalZonedDateTime
+                    }
+
+
                 } else {
                     paused = false
+                    activity?.findViewById<ConstraintLayout>(R.id.advancedStockFragment_chart_details_constraintLayout)?.hide()
 
                     updatePrice()
                     setChange()
                 }
 
                 activity?.findViewById<SwipeRefreshLayout>(R.id.advancedStockFragment_swipeRefreshLayout)?.isEnabled = !paused
-
+/*
                 if (index == null) {
                     paused = false
                     activity?.findViewById<SwipeRefreshLayout>(R.id.advancedStockFragment_swipeRefreshLayout)?.isEnabled =
@@ -225,7 +259,7 @@ class AdvancedStockFragment : Calculations, Fragment(), FragmentTransactions, Ma
                             }
                         }
                     }
-                }
+                }*/
             }
         }
 
@@ -233,9 +267,8 @@ class AdvancedStockFragment : Calculations, Fragment(), FragmentTransactions, Ma
         // TODO move this to view.apply
         view.findViewById<TextView>(R.id.advancedStockFragment_timeRangeSelector_1D_textView).apply {
             setTextColor(highlightColor)
-            background =
-                ContextCompat.getDrawable(requireContext(), R.drawable.background_stock_offline)
-            background.setTint(ContextCompat.getColor(requireContext(), polarityColor))
+            background = ContextCompat.getDrawable(context, R.drawable.background_stock_offline)
+            background.setTint(ContextCompat.getColor(context, polarityColor))
 
             setOnClickListener { setTimeInterval(ValidIntervals.General.ONE_DAY, this) }
         }
@@ -326,17 +359,10 @@ class AdvancedStockFragment : Calculations, Fragment(), FragmentTransactions, Ma
 
         }
 
-        activity?.findViewById<BottomNavigationView>(R.id.main_bottomNavigationView)?.menu?.findItem(
-            R.id.menu_bottomNavigationView_search
-        )?.isChecked = true
-        val floatingScrollView =
-            activity?.findViewById<ScrollView>(R.id.advancedStockFragment_scrollView)
-        floatingScrollView?.viewTreeObserver?.addOnScrollChangedListener(
-            FloatingScrollView(
-                activity,
-                floatingScrollView
-            ).listener
-        )
+        activity?.findViewById<BottomNavigationView>(R.id.main_bottomNavigationView)?.menu?.findItem(R.id.menu_bottomNavigationView_search)?.isChecked = true
+        activity?.findViewById<ScrollView>(R.id.advancedStockFragment_scrollView)?.apply {
+            viewTreeObserver?.addOnScrollChangedListener(FloatingScrollView(activity, this).listener)
+        }
 
         queue = context?.let { RequestSingleton(it) }
 
@@ -701,8 +727,8 @@ class AdvancedStockFragment : Calculations, Fragment(), FragmentTransactions, Ma
                 }
 
                 // Padding Setter
-                val timeZone = ZoneId.of(exchangeTimezoneName)
-                val currentEpochTime = ZonedDateTime.now(timeZone).toInstant().epochSecond
+                zoneID = ZoneId.of(exchangeTimezoneName)
+                val currentEpochTime = ZonedDateTime.now(zoneID).toInstant().epochSecond
                 val preStart = currentTradingPeriod?.pre?.start
                 val postEnd = currentTradingPeriod?.post?.end
                 if (preStart != null && postEnd != null && currentEpochTime < postEnd) {
@@ -716,6 +742,8 @@ class AdvancedStockFragment : Calculations, Fragment(), FragmentTransactions, Ma
                     }
                 }
             }
+
+            timeStampData = timestamp ?: listOf()
 
             indicators?.quote?.apply {
                 quoteData = this
