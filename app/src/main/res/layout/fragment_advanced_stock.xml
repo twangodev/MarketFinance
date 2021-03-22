@@ -97,6 +97,204 @@
                     app:spark_scrubLineColor="@color/theme.colorOnPrimary" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/advancedStockFragment.chart.details.constraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@color/theme.colorPrimary"
+                    android:orientation="horizontal"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toTopOf="@+id/advancedStockFragment.chart.sparkView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/advancedStockFragment.chart.details.left.constraintLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/advancedStockFragment.chart.details.right.constraintLayout"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.chart.details.left.open.header.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.chart.details.open"
+                            android:textColor="@color/theme.colorOnPrimary"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/advancedStockFragment.chart.details.left.open.textView"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/advancedStockFragment.chart.details.left.open.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.chart.details.left.open.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/default.price"
+                            android:textColor="@color/stock.offline"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toTopOf="@+id/advancedStockFragment.chart.details.left.low.textView"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.chart.details.left.open.header.textView"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.chart.details.left.low.header.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.chart.details.low"
+                            android:textColor="@color/theme.colorOnPrimary"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/advancedStockFragment.chart.details.left.low.textView"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/advancedStockFragment.chart.details.left.low.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.chart.details.left.low.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/default.price"
+                            android:textColor="@color/stock.offline"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toTopOf="@+id/advancedStockFragment.chart.details.left.volume.textView"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.chart.details.left.low.header.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.chart.details.left.open.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.chart.details.left.volume.header.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.chart.details.volume"
+                            android:textColor="@color/theme.colorOnPrimary"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/advancedStockFragment.chart.details.left.volume.textView"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/advancedStockFragment.chart.details.left.volume.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.chart.details.left.volume.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/default.number"
+                            android:textColor="@color/stock.offline"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.chart.details.left.volume.header.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.chart.details.left.low.textView" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/advancedStockFragment.chart.details.right.constraintLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.chart.details.left.constraintLayout"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.chart.details.right.high.header.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.chart.details.high"
+                            android:textColor="@color/theme.colorOnPrimary"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/advancedStockFragment.chart.details.right.high.textView"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/advancedStockFragment.chart.details.right.high.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.chart.details.right.high.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/default.price"
+                            android:textColor="@color/stock.offline"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toTopOf="@+id/advancedStockFragment.chart.details.right.close.textView"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.chart.details.right.high.header.textView"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.chart.details.right.close.header.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.chart.details.close"
+                            android:textColor="@color/theme.colorOnPrimary"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/advancedStockFragment.chart.details.right.close.textView"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/advancedStockFragment.chart.details.right.close.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.chart.details.right.close.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/default.price"
+                            android:textColor="@color/stock.offline"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toTopOf="@+id/advancedStockFragment.chart.details.right.time.textView"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.chart.details.right.close.header.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.chart.details.right.high.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.chart.details.right.time.header.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/advancedStock.chart.details.time"
+                            android:textColor="@color/theme.colorOnPrimary"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/advancedStockFragment.chart.details.right.time.textView"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/advancedStockFragment.chart.details.right.time.textView" />
+
+                        <TextView
+                            android:id="@+id/advancedStockFragment.chart.details.right.time.textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/roboto_condensed"
+                            android:text="@string/default.time"
+                            android:textColor="@color/stock.offline"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.chart.details.right.time.header.textView"
+                            app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.chart.details.right.close.textView" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/advancedStockFragment.timeRangeSelector.constraintLayout"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
@@ -182,13 +380,14 @@
                     <ImageView
                         android:id="@+id/advancedStockFragment.chartSelector.imageView"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_round_waterfall_chart_24"
+                        android:layout_height="0dp"
+                        android:padding="5dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/advancedStockFragment.timeRangeSelector.1Y.textView"
                         app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_round_waterfall_chart_24"
                         app:tint="@color/stock.offline" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -645,7 +844,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="24dp"
                         android:fontFamily="@font/roboto_condensed"
-                        android:text="@string/advancedStock.quickStatistics.volume"
+                        android:text="@string/advancedStock.chart.details.volume"
                         android:textColor="@color/theme.colorOnPrimary"
                         android:textSize="10sp"
                         app:layout_constraintEnd_toEndOf="parent"
