@@ -8,7 +8,7 @@ data class Meta(
     val firstTradeDate: Long?,
     val regularMarketTime: Long?,
     val gmtOffset: Long?,
-    val timezone: String?,
+    val ZoneID: String?,
     val exchangeTimezoneName: String?,
     val regularMarketPrice: Double?,
     val chartPreviousClose: Double?,
