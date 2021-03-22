@@ -15,32 +15,32 @@ object Defaults {
     const val optionsAPIFrequency = 5000L
 
     val defaultStocks = listOf(
-        WatchListData("FB", "Facebook, Inc.", "EQUITY", 0.00, 0.00),
-        WatchListData("AMZN", "Amazon.com, Inc.", "EQUITY", 0.00, 0.00),
-        WatchListData("AAPL", "Apple Inc.", "EQUITY", 0.00, 0.00),
-        WatchListData("NFLX", "Netflix, Inc.", "EQUITY", 0.00, 0.00),
-        WatchListData("GOOG", "Advanced Micro Devices, Inc.", "EQUITY", 0.00, 0.00)
+        WatchListData("FB", "Facebook, Inc.", "Equity", 0.00, 0.00),
+        WatchListData("AMZN", "Amazon.com, Inc.", "Equity", 0.00, 0.00),
+        WatchListData("AAPL", "Apple Inc.", "Equity", 0.00, 0.00),
+        WatchListData("NFLX", "Netflix, Inc.", "Equity", 0.00, 0.00),
+        WatchListData("GOOG", "Advanced Micro Devices, Inc.", "Equity", 0.00, 0.00)
     )
 
     val defaultIndexes = listOf(
-        WatchListData("^GSPC", "S&P 500", "INDEX", 0.00, 0.00),
-        WatchListData("^DJI", "Dow Jones Industrial Average", "INDEX", 0.00, 0.00),
-        WatchListData("^IXIC", "NASDAQ Composite", "INDEX", 0.00, 0.00),
-        WatchListData("^RUT", "Russell 2000", "INDEX", 0.00, 0.00)
+        WatchListData("^GSPC", "S&P 500", "Index", 0.00, 0.00),
+        WatchListData("^DJI", "Dow Jones Industrial Average", "Index", 0.00, 0.00),
+        WatchListData("^IXIC", "NASDAQ Composite", "Index", 0.00, 0.00),
+        WatchListData("^RUT", "Russell 2000", "Index", 0.00, 0.00)
     )
 
 
     object SearchQuoteTypes {
 
-        const val EQUITY = "EQUITY"
-        const val INDEX = "INDEX"
+        const val EQUITY = "Equity"
+        const val INDEX = "Index"
         const val CRYPTOCURRENCY = "CRYPTOCURRENCY"
 
     }
 
     val searchQuoteTypeFilters = listOf(
-        "EQUITY",
-        "INDEX",
+        "Equity",
+        "Index",
         "CRYPTOCURRENCY"
     )
 
