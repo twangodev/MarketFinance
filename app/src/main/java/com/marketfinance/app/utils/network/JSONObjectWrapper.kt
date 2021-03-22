@@ -22,7 +22,7 @@ class JSONObjectWrapper {
         /**
          * Retrieves [T] to with [key]
          *
-         * @param T Supports [JSONObject], [JSONArray], [String], [Int], [Long], [Double], [RawFMT], [RawLongFMT]
+         * @param T Supports [JSONObject], [JSONArray], [String], [Int], [Long], [Double], [Boolean],[RawFMT], [RawLongFMT]
          * @param key The [key] that points to [T] in the [JSONArray]
          * @return The [T] with the specified [key]
          * @author James Ding
@@ -37,6 +37,7 @@ class JSONObjectWrapper {
                     Long::class -> getLong(key)
                     Double::class -> getDouble(key)
                     Float::class -> getDouble(key).toFloat()
+                    Boolean::class -> getBoolean(key)
                     RawFMT::class -> RawFMT(
                         getJSONObject(key).getDouble("raw"),
                         getJSONObject(key).getString("fmt")
