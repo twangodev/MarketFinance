@@ -3,12 +3,52 @@ package com.marketfinance.app.utils.network.parser
 import com.marketfinance.app.utils.network.JSONArrayWrapper.Companion.toList
 import com.marketfinance.app.utils.network.JSONObjectWrapper.Companion.first
 import com.marketfinance.app.utils.network.JSONObjectWrapper.Companion.getElement
+import com.marketfinance.app.utils.network.parser.extensions.JSONObjectSparkParser
 import com.marketfinance.app.utils.network.parser.responses.*
 import com.marketfinance.app.utils.network.parser.responses.historical.*
 import org.json.JSONArray
 import org.json.JSONObject
 
-interface JSONObjectParser {
+interface JSONObjectParser : JSONObjectSparkParser {
+
+    fun JSONObject.parseSearchDataResponse(): SearchDataResponse? {
+        getElement<JSONObject>("g0")?.getElement<JSONObject>("data").apply {
+            return if (this != null) {
+                val items = mutableListOf<SearchDataItems>()
+                getElement<JSONArray>("items")?.toList<JSONObject>()?.forEach { item ->
+                    item?.apply {
+                        items.add(
+                            SearchDataItems(
+                                getElement("symbol"),
+                                getElement("name"),
+                                getElement("exch"),
+                                getElement("type"),
+                                getElement("exchDisp"),
+                                getElement("typeDisp")
+                            )
+                        )
+                    }
+                }
+                SearchDataResponse(
+                    getElement("suggestionTitleAccessor"),
+                    getElement<JSONArray>("suggestionMeta")?.toList(),
+                    getElement("hiConf"),
+                    items
+                )
+            } else {
+                null
+            }
+        }
+    }
+
+    /**
+     * Parses spark response in [JSONObjectSparkParser] for compilation purposes
+     *
+     * @return
+     */
+    fun JSONObject.parseSparkResponse(): SparkResponse? {
+        return extensionParseSparkResponse()
+    }
 
     /**
      * Parses [JSONObject] as [FinancialDataResponse]
@@ -179,7 +219,6 @@ interface JSONObjectParser {
     fun JSONObject.parseHistoricalData(): HistoricalData? {
         getElement<JSONObject>("chart")?.first<JSONObject>("result").apply {
             return if (this != null) {
-
                 val meta: Meta?
                 getElement<JSONObject>("meta").apply {
                     meta = if (this != null) {
