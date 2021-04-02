@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/roboto_condensed"
-                android:text="@string/marketOrder.unitsToPurchase"
+                android:text="@string/Static.UnitsToPurchase"
                 android:textColor="@color/stock.offline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
                 android:fontFamily="@font/roboto_condensed"
                 android:gravity="center"
                 android:hint="0"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:maxLength="6"
                 android:textColor="@color/theme.colorOnPrimary"
                 android:textSize="90sp"
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:fontFamily="@font/roboto_condensed"
-                android:text="@string/marketOrder.currentUnits"
+                android:text="@string/Dynamic.CurrentUnitsOfTicker"
                 android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +69,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/roboto_condensed"
-                android:text="@string/default.quickStatistics"
+                android:text="@string/Static.QuickStatistics"
                 android:textColor="@color/theme.colorOnPrimary"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +92,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto_condensed"
-                android:text="@string/marketOrder.quickStatistics.currentAsk.header"
+                android:text="@string/Static.CurrentAsk"
                 android:textColor="@color/theme.colorOnPrimary"
                 android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/marketOrderPurchase.currentBid.textView"
@@ -107,7 +107,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:fontFamily="@font/roboto_condensed"
-                android:text="@string/marketOrder.quickStatistics.currentBid.header"
+                android:text="@string/Static.CurrentBid"
                 android:textColor="@color/theme.colorOnPrimary"
                 android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -119,7 +119,7 @@
                 android:id="@+id/marketOrderPurchase.currentAsk.tickerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/default.bidAsk"
+                android:text="@string/Placeholder.BidAsk"
                 app:layout_constraintEnd_toEndOf="@+id/marketOrderPurchase.curretAsk.textView"
                 app:layout_constraintStart_toStartOf="@+id/marketOrderPurchase.curretAsk.textView"
                 app:layout_constraintTop_toBottomOf="@+id/marketOrderPurchase.curretAsk.textView" />
@@ -128,58 +128,177 @@
                 android:id="@+id/marketOrderPurchase.currentBid.tickerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/default.bidAsk"
+                android:text="@string/Placeholder.BidAsk"
                 app:layout_constraintEnd_toEndOf="@+id/marketOrderPurchase.currentBid.textView"
                 app:layout_constraintStart_toStartOf="@+id/marketOrderPurchase.currentBid.textView"
                 app:layout_constraintTop_toBottomOf="@+id/marketOrderPurchase.currentBid.textView" />
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/marketOrderPurchase.oneDayRange.textView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto_condensed"
-                android:text="@string/marketOrder.quickStatistics.oneDayRange"
+                android:text="@string/Static.OneDayRange"
                 android:textColor="@color/theme.colorOnPrimary"
                 android:textSize="10sp"
-                app:layout_constraintEnd_toStartOf="@+id/textView17"
+                app:layout_constraintEnd_toStartOf="@+id/marketOrderPurchase.fiftyTwoWeekRange.textView"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/marketOrderPurchase.currentAsk.tickerView" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/marketOrderPurchase.fiftyTwoWeekRange.textView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:fontFamily="@font/roboto_condensed"
-                android:text="@string/marketOrder.quickStatistics.fiftyTwoWeekRange"
+                android:text="@string/Static.FiftyTwoWeekRange"
                 android:textColor="@color/theme.colorOnPrimary"
                 android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView16"
+                app:layout_constraintStart_toEndOf="@+id/marketOrderPurchase.oneDayRange.textView"
                 app:layout_constraintTop_toBottomOf="@+id/marketOrderPurchase.currentBid.tickerView" />
 
             <com.robinhood.ticker.TickerView
-                android:id="@+id/tickerView"
+                android:id="@+id/marketOrderPurchase.oneDayRange.tickerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/default.bidAsk"
-                app:layout_constraintEnd_toEndOf="@+id/textView16"
-                app:layout_constraintStart_toStartOf="@+id/textView16"
-                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+                android:text="@string/Placeholder.PriceRange"
+                app:layout_constraintEnd_toEndOf="@+id/marketOrderPurchase.oneDayRange.textView"
+                app:layout_constraintStart_toStartOf="@+id/marketOrderPurchase.oneDayRange.textView"
+                app:layout_constraintTop_toBottomOf="@+id/marketOrderPurchase.oneDayRange.textView" />
 
             <com.robinhood.ticker.TickerView
-                android:id="@+id/tickerView2"
+                android:id="@+id/marketOrderPurchase.fiftyTwoWeekRange.tickerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/default.bidAsk"
-                app:layout_constraintEnd_toEndOf="@+id/textView17"
-                app:layout_constraintStart_toStartOf="@+id/textView17"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
+                android:text="@string/Placeholder.PriceRange"
+                app:layout_constraintEnd_toEndOf="@+id/marketOrderPurchase.fiftyTwoWeekRange.textView"
+                app:layout_constraintStart_toStartOf="@+id/marketOrderPurchase.fiftyTwoWeekRange.textView"
+                app:layout_constraintTop_toBottomOf="@+id/marketOrderPurchase.fiftyTwoWeekRange.textView" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_condensed"
+                android:text="@string/Static.Trade"
+                android:textColor="@color/theme.colorOnPrimary"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/marketOrderPurchase.oneDayRange.tickerView" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView2"
+                app:layout_constraintStart_toEndOf="@+id/textView2"
+                app:layout_constraintTop_toTopOf="@+id/textView2"
+                app:srcCompat="@drawable/ic_round_info_24" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_condensed"
+                android:text="@string/Static.Units"
+                android:textColor="@color/theme.colorOnPrimary"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toStartOf="@+id/textView22"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="@font/roboto_condensed"
+                android:text="@string/Static.CurrentBuyingPower"
+                android:textColor="@color/theme.colorOnPrimary"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textView21"
+                app:layout_constraintTop_toTopOf="@+id/textView21" />
+
+            <com.robinhood.ticker.TickerView
+                android:id="@+id/tickerView4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/Placeholder.Double"
+                app:layout_constraintEnd_toEndOf="@+id/textView21"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textView21"
+                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+            <com.robinhood.ticker.TickerView
+                android:id="@+id/tickerView5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/Placeholder.Price"
+                app:layout_constraintEnd_toEndOf="@+id/textView22"
+                app:layout_constraintStart_toStartOf="@+id/textView22"
+                app:layout_constraintTop_toBottomOf="@+id/textView22" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_condensed"
+                android:text="@string/Static.LiveTradeValue"
+                android:textColor="@color/theme.colorOnPrimary"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toStartOf="@+id/textView10"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tickerView4" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="@font/roboto_condensed"
+                android:text="@string/Static.PostBuyingPower"
+                android:textColor="@color/theme.colorOnPrimary"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textView7"
+                app:layout_constraintTop_toTopOf="@+id/textView7" />
+
+            <com.robinhood.ticker.TickerView
+                android:id="@+id/tickerView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/Placeholder.Double"
+                app:layout_constraintEnd_toEndOf="@+id/textView7"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textView7"
+                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+            <com.robinhood.ticker.TickerView
+                android:id="@+id/tickerView6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/Placeholder.Price"
+                app:layout_constraintEnd_toEndOf="@+id/textView10"
+                app:layout_constraintStart_toStartOf="@+id/textView10"
+                app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -187,14 +306,14 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/marketOrderPurchase.confirmPurchase.button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/roboto_condensed"
-        android:text="Button"
+        android:text="@string/Dynamic.MarketOrderPurchaseConfirmation"
         android:textColor="@color/theme.colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

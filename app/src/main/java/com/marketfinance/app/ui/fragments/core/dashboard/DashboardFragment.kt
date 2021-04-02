@@ -13,17 +13,16 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.marketfinance.app.R
 import com.marketfinance.app.ui.fragments.advancedStockFragment.MarketStatusReturn
 import com.marketfinance.app.utils.Defaults
-import com.marketfinance.app.utils.MarketInterface
+import com.marketfinance.app.utils.interfaces.MarketInterface
 import com.marketfinance.app.utils.network.RequestSingleton
-import com.marketfinance.app.utils.security.EncryptedPreference
 import com.marketfinance.app.utils.storage.PortfolioData
 import com.marketfinance.app.utils.threads.ThreadManager
+import com.marketfinance.app.utils.transactions.PortfolioManager
 
-class DashboardFragment : Fragment(), MarketInterface {
+class DashboardFragment : Fragment(), MarketInterface, PortfolioManager {
 
     private val TAG = "DashboardFragment"
 
@@ -42,7 +41,7 @@ class DashboardFragment : Fragment(), MarketInterface {
 
         initializeTicker(
             view.findViewById(R.id.dashboard_papertrade_price_tickerView),
-            getString(R.string.default_price),
+            getString(R.string.Placeholder_Price),
             resources.getFont(R.font.roboto_condensed),
             Defaults.tickerDefaultAnimation
         )
@@ -50,7 +49,7 @@ class DashboardFragment : Fragment(), MarketInterface {
             view.findViewById(
                 R.id.dashboard_papertrade_realizedChange_tickerView
             ),
-            getString(R.string.default_change),
+            getString(R.string.Placeholder_Change),
             resources.getFont(R.font.roboto_condensed),
             Defaults.tickerDefaultAnimation
         )
@@ -58,7 +57,7 @@ class DashboardFragment : Fragment(), MarketInterface {
             view.findViewById(
                 R.id.dashboard_papertrade_unrealizedChange_tickerView
             ),
-            getString(R.string.default_change),
+            getString(R.string.Placeholder_Change),
             resources.getFont(R.font.roboto_condensed),
             Defaults.tickerDefaultAnimation
         )
@@ -73,17 +72,10 @@ class DashboardFragment : Fragment(), MarketInterface {
             }
 
 
-        currentPortfolio = gson.fromJson<MutableList<PortfolioData>>(
-            activity?.let {
-                EncryptedPreference("portfolioData")
-                    .getPreference(it)
-                    .getString("gson", gson.toJson(mutableListOf<PortfolioData>()))
-            },
-            object : TypeToken<MutableList<PortfolioData>>() {}.type
-        )[0]
+        currentPortfolio = getActivePortfolio(context)
         Log.d(TAG, "Current Portfolio: $currentPortfolio")
         view.findViewById<TextView>(R.id.dashboard_currentPortfolio_textView).text = getString(
-            R.string.dashboard_investing_paperTrade_portfolio,
+            R.string.Dynamic_CurrentPortfolio,
             currentPortfolio!!.portfolioName
         )
 
@@ -134,7 +126,7 @@ class DashboardFragment : Fragment(), MarketInterface {
             { e ->
                 activity?.findViewById<TextView>(R.id.dashboard_marketStatus_textView)
                     ?.apply {
-                        text = getString(R.string.default_error_connection)
+                        text = getString(R.string.Static_ConnectionError)
                         setTextColor(
                             ContextCompat.getColor(
                                 requireContext(),

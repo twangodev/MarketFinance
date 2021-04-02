@@ -47,7 +47,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto_condensed"
-                    android:text="@string/default.symbol"
+                    android:text="@string/Placeholder.Symbol"
                     android:textSize="18sp" />
 
                 <TextView
@@ -57,7 +57,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/roboto_condensed"
-                    android:text="@string/default.details"
+                    android:text="@string/Placeholder.NameType"
                     android:textSize="10sp"
                     tools:ignore="SmallSp" />
             </LinearLayout>
@@ -79,7 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical|end"
-                    android:text="@string/default.price"
+                    android:text="@string/Placeholder.Price"
                     android:textSize="18sp" />
 
                 <LinearLayout
@@ -100,7 +100,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal|end"
-                        android:text="@string/default.change"
+                        android:text="@string/Placeholder.Change"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -113,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_condensed"
-            android:text="@string/default.error.exception"
+            android:text="@string/Static.Error"
             android:textColor="@color/stock.negative"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/searchResults.clickLayer.contraintLayout"

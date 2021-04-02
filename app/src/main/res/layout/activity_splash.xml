@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/eczar"
-            android:text="@string/app.fullName"
+            android:text="@string/App.FullName"
             android:textColor="@color/theme.colorOnPrimary"
             android:textSize="30sp"
             android:visibility="gone"
