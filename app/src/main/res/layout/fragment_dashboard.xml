@@ -22,7 +22,7 @@
             android:gravity="center"
             android:paddingHorizontal="8dp"
             android:paddingVertical="1dp"
-            android:text="@string/dashboard.investing.marketStatus"
+            android:text="@string/Static.MarketStatus"
             android:textColor="@color/theme.colorOnPrimary"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +48,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto_condensed"
-                android:text="@string/dashboard.investing.paperTrade.portfolio"
+                android:text="@string/Dynamic.CurrentPortfolio"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@string/default.price"
+                android:text="@string/Placeholder.Price"
                 android:textColor="@color/stock.offline"
                 android:textSize="30sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="@string/default.change"
+                android:text="@string/Placeholder.Change"
                 android:textColor="@color/stock.offline"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@+id/dashboard.papertrade.realizedChange.imageView"
@@ -102,7 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="@string/default.change"
+                android:text="@string/Placeholder.Change"
                 android:textColor="@color/stock.offline"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@+id/dashboard.papertrade.unrealizedChange.imageView"
@@ -167,7 +167,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/roboto_condensed"
-                    android:text="@string/dashboard.portfolio.header"
+                    android:text="@string/Static.Portfolio"
                     android:textColor="@color/theme.colorOnPrimary"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -193,7 +193,7 @@
                         android:layout_marginEnd="4dp"
                         android:fontFamily="@font/roboto_condensed_bold"
                         android:gravity="center"
-                        android:text="@string/default.manage"
+                        android:text="@string/Static.Manage"
                         android:textSize="14sp" />
 
                     <ImageView
@@ -239,7 +239,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/roboto_condensed"
-                    android:text="@string/dashboard.settings.header"
+                    android:text="@string/Static.UserSettings"
                     android:textColor="@color/theme.colorOnPrimary"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -265,7 +265,7 @@
                         android:layout_marginEnd="4dp"
                         android:fontFamily="@font/roboto_condensed_bold"
                         android:gravity="center"
-                        android:text="@string/default.manage"
+                        android:text="@string/Static.Manage"
                         android:textSize="14sp" />
 
                     <ImageView

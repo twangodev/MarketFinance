@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu.bottomNavigationView.dashboard"
-        android:title="@string/menu.bottomNavigationView.dashboardTitle"
+        android:title="@string/Static.Dashboard"
         android:icon="@drawable/ic_round_pie_chart_24" />
     <item
         android:id="@+id/menu.bottomNavigationView.search"
-        android:title="@string/menu.bottomNavigationView.searchTitle"
+        android:title="@string/Static.Search"
         android:icon="@drawable/ic_round_search_24" />
     <item
         android:id="@+id/menu.bottomNavigationView.orders"
-        android:title="@string/menu.bottomNavigationView.ordersTitle"
+        android:title="@string/Static.Order"
         android:icon="@drawable/ic_round_trending_up_24" />
 </menu>
