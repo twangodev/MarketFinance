@@ -43,7 +43,7 @@
                 android:gravity="center"
                 android:hint="0"
                 android:inputType="numberDecimal"
-                android:maxLength="6"
+                android:maxLength="10"
                 android:textColor="@color/theme.colorOnPrimary"
                 android:textSize="90sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -119,7 +119,7 @@
                 android:id="@+id/marketOrderPurchase.currentAsk.tickerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/Placeholder.BidAsk"
+                android:text="@string/Placeholder.Price"
                 app:layout_constraintEnd_toEndOf="@+id/marketOrderPurchase.curretAsk.textView"
                 app:layout_constraintStart_toStartOf="@+id/marketOrderPurchase.curretAsk.textView"
                 app:layout_constraintTop_toBottomOf="@+id/marketOrderPurchase.curretAsk.textView" />
@@ -128,7 +128,7 @@
                 android:id="@+id/marketOrderPurchase.currentBid.tickerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/Placeholder.BidAsk"
+                android:text="@string/Placeholder.Price"
                 app:layout_constraintEnd_toEndOf="@+id/marketOrderPurchase.currentBid.textView"
                 app:layout_constraintStart_toStartOf="@+id/marketOrderPurchase.currentBid.textView"
                 app:layout_constraintTop_toBottomOf="@+id/marketOrderPurchase.currentBid.textView" />

@@ -807,7 +807,7 @@
                         android:id="@+id/advancedStockFragment.quickStatistics.bid.tickerView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/Placeholder.BidAsk"
+                        android:text="@string/Placeholder.Price"
                         app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.quickStatistics.chartHigh.textView"
                         app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.quickStatistics.chartHigh.textView"
                         app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.bid.textView" />
@@ -816,7 +816,7 @@
                         android:id="@+id/advancedStockFragment.quickStatistics.ask.tickerView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/Placeholder.BidAsk"
+                        android:text="@string/Placeholder.Price"
                         app:layout_constraintEnd_toEndOf="@+id/advancedStockFragment.quickStatistics.chartLow.textView"
                         app:layout_constraintStart_toStartOf="@+id/advancedStockFragment.quickStatistics.chartLow.textView"
                         app:layout_constraintTop_toBottomOf="@+id/advancedStockFragment.quickStatistics.ask.textView" />

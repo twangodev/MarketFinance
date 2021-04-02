@@ -5,7 +5,6 @@
     <string name="Dynamic.CurrentPortfolio">Portfolio: %1$s</string>
     <string name="Dynamic.CurrentUnitsOfTicker">You currently have %1$d units of %2$s</string>
     <string name="Dynamic.MarketOrderPurchaseConfirmation">Market Order %1$d of %2$s</string>
-    <string name="Placeholder.BidAsk">$0.00 x 0</string>
     <string name="Placeholder.Change">$0.00 (0.00%)</string>
     <string name="Placeholder.Double">0.00</string>
     <string name="Placeholder.DoublePercentage">0.00%</string>

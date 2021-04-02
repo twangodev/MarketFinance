@@ -2,13 +2,10 @@ package com.marketfinance.app.utils.interfaces
 
 import android.content.Context
 import android.graphics.Typeface
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.Transformation
-import android.widget.EditText
 import androidx.core.content.ContextCompat
 import com.marketfinance.app.R
 import com.marketfinance.app.utils.Defaults
@@ -17,7 +14,6 @@ import com.robinhood.ticker.TickerView
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import java.util.*
 import kotlin.math.abs
 
 /**
@@ -27,21 +23,16 @@ import kotlin.math.abs
 interface MarketInterface {
 
     /**
-     * Initializes ticker. Should be called in onCreateView or equivalent
+     * Formats decimal without US dollar with at least 2 decimal digits and a max of 3 decimal digits
      *
-     * @param ticker [TickerView] to initialize
-     * @param initialText The initial text the [TickerView] should have
-     * @param font Sets the [Typeface] for the [TickerView]
-     * @param duration The animation duration
+     * @param double Given [double] or to format
+     * @return Formatted [Double] or N/A
      * @author James Ding
      */
-    fun initializeTicker(ticker: TickerView, initialText: String, font: Typeface, duration: Long) {
-        ticker.typeface = font
-        ticker.setCharacterLists(TickerUtils.provideNumberList())
-        ticker.animationDuration = duration
-        ticker.animationInterpolator = AccelerateDecelerateInterpolator()
-        ticker.setPreferredScrollingDirection(TickerView.ScrollingDirection.ANY)
-        ticker.text = initialText
+    fun formatDouble(double: Double?): String = if (double != null) {
+        DecimalFormat("0.00#").format(double)
+    } else {
+        "N/A"
     }
 
     /**
@@ -53,19 +44,6 @@ interface MarketInterface {
      */
     fun formatDoubleDollar(double: Double?): String = if (double != null) {
         "$" + DecimalFormat("0.00#").format(double)
-    } else {
-        "N/A"
-    }
-
-    /**
-     * Formats decimal without US dollar with at least 2 decimal digits and a max of 3 decimal digits
-     *
-     * @param double Given [double] or to format
-     * @return Formatted [Double] or N/A
-     * @author James Ding
-     */
-    fun formatDouble(double: Double?): String = if (double != null) {
-        DecimalFormat("0.00#").format(double)
     } else {
         "N/A"
     }
@@ -105,6 +83,18 @@ interface MarketInterface {
     }
 
     /**
+     * Retrieves drawable with [change]
+     *
+     * @param context Required to get the drawable with [ContextCompat]
+     * @param change The change to determine the color
+     */
+    fun getChangeDrawable(context: Context, change: Double) = if (change >= 0) {
+        ContextCompat.getDrawable(context, R.drawable.avd_tdtu)
+    } else {
+        ContextCompat.getDrawable(context, R.drawable.avd_tutd)
+    }
+
+    /**
      * Retrieves interpreted color with [change]
      *
      * @param context Required to get the interpreted color with [ContextCompat]
@@ -132,90 +122,21 @@ interface MarketInterface {
     }
 
     /**
-     * Retrieves drawable with [change]
+     * Initializes ticker. Should be called in onCreateView or equivalent
      *
-     * @param context Required to get the drawable with [ContextCompat]
-     * @param change The change to determine the color
+     * @param ticker [TickerView] to initialize
+     * @param initialText The initial text the [TickerView] should have
+     * @param font Sets the [Typeface] for the [TickerView]
+     * @param duration The animation duration
+     * @author James Ding
      */
-    fun getChangeDrawable(context: Context, change: Double) = if (change >= 0) {
-        ContextCompat.getDrawable(context, R.drawable.avd_tdtu)
-    } else {
-        ContextCompat.getDrawable(context, R.drawable.avd_tutd)
-    }
-
-    /**
-     * Formats [EditText] for [Int]
-     *
-     * Code sourced from [https://stackoverflow.com/questions/34607560/add-thousand-separators-automatically-while-text-changes-in-android-edittext/34607831]
-     *
-     * @author Shree Krishna
-     */
-    class NumberTextWatcherForThousand(var editText: EditText) : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-        override fun afterTextChanged(s: Editable) {
-            try {
-                editText.removeTextChangedListener(this)
-                val value = editText.text.toString()
-                if (value != "") {
-                    if (value.startsWith(".")) {
-                        editText.setText("0.")
-                    }
-                    if (value.startsWith("0") && !value.startsWith("0.")) {
-                        editText.setText("")
-                    }
-                    val str = editText.text.toString().replace(",".toRegex(), "")
-                    if (value != "") editText.setText(getDecimalFormattedString(str))
-                    editText.setSelection(editText.text.toString().length)
-                }
-                editText.addTextChangedListener(this)
-                return
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-                editText.addTextChangedListener(this)
-            }
-        }
-
-        companion object {
-            fun getDecimalFormattedString(value: String): String {
-                val lst = StringTokenizer(value, ".")
-                var str1 = value
-                var str2 = ""
-                if (lst.countTokens() > 1) {
-                    str1 = lst.nextToken()
-                    str2 = lst.nextToken()
-                }
-                var str3 = ""
-                var i = 0
-                var j = -1 + str1.length
-                if (str1[-1 + str1.length] == '.') {
-                    j--
-                    str3 = "."
-                }
-                var k = j
-                while (true) {
-                    if (k < 0) {
-                        if (str2.isNotEmpty()) str3 = "$str3.$str2"
-                        return str3
-                    }
-                    if (i == 3) {
-                        str3 = ",$str3"
-                        i = 0
-                    }
-                    str3 = str1[k].toString() + str3
-                    i++
-                    k--
-                }
-            }
-
-            fun trimCommaOfString(string: String): String {
-                return if (string.contains(",")) {
-                    string.replace(",", "")
-                } else {
-                    string
-                }
-            }
-        }
+    fun initializeTicker(ticker: TickerView, initialText: String, font: Typeface, duration: Long) {
+        ticker.typeface = font
+        ticker.setCharacterLists(TickerUtils.provideNumberList())
+        ticker.animationDuration = duration
+        ticker.animationInterpolator = AccelerateDecelerateInterpolator()
+        ticker.setPreferredScrollingDirection(TickerView.ScrollingDirection.ANY)
+        ticker.text = initialText
     }
 
     /**
@@ -248,4 +169,5 @@ interface MarketInterface {
             view.requestLayout()
         }
     }
+
 }
