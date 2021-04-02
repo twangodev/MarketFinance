@@ -1,7 +1,7 @@
-package com.marketfinance.app.utils.network
+package com.marketfinance.app.utils.network.wrappers
 
 import android.util.Log
-import com.marketfinance.app.utils.network.JSONArrayWrapper.Companion.toList
+import com.marketfinance.app.utils.network.wrappers.JSONArrayWrapper.Companion.toList
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject

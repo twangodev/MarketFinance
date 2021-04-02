@@ -19,7 +19,7 @@ import com.marketfinance.app.ui.fragments.core.dashboard.UserWatchListData
 import com.marketfinance.app.ui.fragments.core.orders.OrdersFragment
 import com.marketfinance.app.ui.fragments.core.search.SearchFragment
 import com.marketfinance.app.utils.Defaults
-import com.marketfinance.app.utils.FragmentTransactions
+import com.marketfinance.app.utils.interfaces.FragmentTransactions
 import com.marketfinance.app.utils.security.EncryptedPreference
 import com.marketfinance.app.utils.security.Hashing
 import com.marketfinance.app.utils.storage.PortfolioData
@@ -28,12 +28,6 @@ import me.abhinay.input.CurrencySymbols
 import java.util.*
 
 class MainActivity : AppCompatActivity(), FragmentTransactions, Hashing {
-
-    companion object {
-        private const val TAG = "MainActivity"
-
-        private val gson = Gson()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,7 +105,7 @@ class MainActivity : AppCompatActivity(), FragmentTransactions, Hashing {
             val onboardingAlert = builder.apply {
                 setView(dialogLayout)
                 setCancelable(false)
-                setPositiveButton(getString(R.string.default_continue)) { dialog, which ->
+                setPositiveButton(getString(R.string.Static_Continue)) { dialog, which ->
                     val portfolioName = portfolioNameEditText.text.toString()
                     val portfolioHash = sha256(portfolioName)
                     val initialBuyingPowerCleanDouble = initialBuyingPowerEditText.cleanDoubleValue
@@ -198,6 +192,12 @@ class MainActivity : AppCompatActivity(), FragmentTransactions, Hashing {
 
     override fun onBackPressed() {
         supportFragmentManager.popBackStack()
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
+
+        private val gson = Gson()
     }
 
 }

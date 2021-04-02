@@ -1,4 +1,4 @@
-package com.marketfinance.app.utils.network.parser.responses.historical
+package com.marketfinance.app.utils.network.responses.historical
 
 data class Quote(
     val open: List<Double?>?,

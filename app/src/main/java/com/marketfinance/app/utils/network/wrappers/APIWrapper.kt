@@ -1,9 +1,10 @@
-package com.marketfinance.app.utils.network
+package com.marketfinance.app.utils.network.wrappers
 
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.marketfinance.app.ui.fragments.advancedStockFragment.data.RangeIntervalData
+import com.marketfinance.app.utils.network.URLRetriever
 import org.json.JSONObject
 
 /**

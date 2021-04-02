@@ -1,4 +1,4 @@
-package com.marketfinance.app.utils.network.parser.responses.historical
+package com.marketfinance.app.utils.network.responses.historical
 
 data class HistoricalData(
     val meta: Meta?,

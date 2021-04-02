@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
@@ -12,9 +13,9 @@ import com.marketfinance.app.R
 import com.marketfinance.app.ui.fragments.advancedStockFragment.data.AdvancedStockIntentData
 import com.marketfinance.app.ui.fragments.transactions.TransactionLayoutIDs
 import com.marketfinance.app.utils.Defaults
-import com.marketfinance.app.utils.MarketInterface
-import com.marketfinance.app.utils.network.APIWrapper
+import com.marketfinance.app.utils.interfaces.MarketInterface
 import com.marketfinance.app.utils.network.RequestSingleton
+import com.marketfinance.app.utils.network.wrappers.APIWrapper
 import com.marketfinance.app.utils.threads.ThreadManager
 
 class MarketOrderPurchaseFragment : Fragment(), MarketInterface {
@@ -51,11 +52,16 @@ class MarketOrderPurchaseFragment : Fragment(), MarketInterface {
             for (id in TransactionLayoutIDs.Purchase.marketOrderPurchaseBidAskTickerViews) {
                 initializeTicker(
                     findViewById(id),
-                    getString(R.string.default_bidAsk),
+                    getString(R.string.Placeholder_BidAsk),
                     resources.getFont(R.font.roboto_condensed),
                     Defaults.tickerDefaultAnimation
                 )
             }
+
+            findViewById<Button>(R.id.marketOrderPurchase_confirmPurchase_button).setOnClickListener {
+
+            }
+
         }
 
 
@@ -70,7 +76,7 @@ class MarketOrderPurchaseFragment : Fragment(), MarketInterface {
         threadManager.createThread("OptionsThread", Thread {
             while (!Thread.interrupted()) {
                 try {
-                    queue?.addToRequestQueue(getOptionsRequest())
+
                     Thread.sleep(Defaults.optionsAPIFrequency)
                 } catch (error: InterruptedException) {
                     Log.e(TAG, error.stackTraceToString())
@@ -80,56 +86,6 @@ class MarketOrderPurchaseFragment : Fragment(), MarketInterface {
         })
     }
 
-    private fun getOptionsRequest() = apiInterface.getOptionsData({ response ->
-        Log.d(TAG, "[REQUEST] OptionsRequest C200")
 
-        /*
-        val optionChain = try {
-            response.getJSONObject("optionChain")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonObject("optionChain")
-        }
-        val result = try {
-            optionChain.getJSONArray("result")?.getJSONObject(0)
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonObject("result")
-        }
-        val quote = try {
-            result?.getJSONObject("quote")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.jsonObject("quote")
-        }
-
-        val oneDayRange = try {
-            result?.getString("regularMarketDayRange")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.string("regularMarketDayRange")
-        }
-        val fiftyTwoRange = try {
-            result?.getString("fiftyTwoWeekRange")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.string("fiftyTwoWeekRange")
-        }
-
-        val bidPrice = try {
-            quote?.getDouble("bid")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.double("bid")
-        }
-        val askPrice = try {
-            quote?.getDouble("ask")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.double("ask")
-        }
-        val bidSize = try {
-            quote?.getInt("bidSize")
-        } catch (error: JSONException) {
-            JSONExceptionHandler.int("bidSize")
-        }
-*/
-
-    }, { error ->
-
-    })
 
 }

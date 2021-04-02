@@ -1,4 +1,4 @@
-package com.marketfinance.app.utils.network
+package com.marketfinance.app.utils.network.wrappers
 
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest

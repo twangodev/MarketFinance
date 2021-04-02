@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -15,18 +16,25 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.marketfinance.app.R
 import com.marketfinance.app.ui.fragments.advancedStockFragment.ValidIntervals
-import com.marketfinance.app.utils.Calculations
 import com.marketfinance.app.utils.Defaults
-import com.marketfinance.app.utils.network.APIWrapper
+import com.marketfinance.app.utils.interfaces.Calculations
+import com.marketfinance.app.utils.interfaces.LayoutManager
 import com.marketfinance.app.utils.network.RequestSingleton
-import com.marketfinance.app.utils.network.SearchWrapper
 import com.marketfinance.app.utils.network.parser.JSONObjectParser
+import com.marketfinance.app.utils.network.wrappers.APIWrapper
+import com.marketfinance.app.utils.network.wrappers.SearchWrapper
 
-class SearchFragment : Fragment(), Calculations, JSONObjectParser, SearchWrapper {
+class SearchFragment : Fragment(), Calculations, JSONObjectParser, SearchWrapper, LayoutManager {
+
 
     private val TAG = "SearchFragment"
 
     private val searchResults = mutableListOf<SearchResultData>()
+
+    private val searchDelay = 200L
+
+    @Volatile
+    private var searchText = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,17 +63,6 @@ class SearchFragment : Fragment(), Calculations, JSONObjectParser, SearchWrapper
         )?.isChecked = true
 
         searchResults.clear()
-        searchResults.add(
-            SearchResultData(
-                null,
-                "",
-                "",
-                0.00,
-                0.00,
-                0.00,
-                getString(R.string.search_error_emptyQuery)
-            )
-        )
         activity?.findViewById<RecyclerView>(R.id.search_searchResults_recyclerView)?.adapter =
             SearchRecyclerViewAdapter(searchResults, activity)
 
@@ -73,19 +70,11 @@ class SearchFragment : Fragment(), Calculations, JSONObjectParser, SearchWrapper
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String?): Boolean {
                     Log.d(TAG, "SearchView Updated Query: $newText")
+                    activity?.findViewById<ProgressBar>(R.id.search_progressBar_progressBar)?.show()
+
                     if (TextUtils.isEmpty(newText)) {
                         searchResults.clear()
-                        searchResults.add(
-                            SearchResultData(
-                                null,
-                                "",
-                                "",
-                                0.00,
-                                0.00,
-                                0.00,
-                                getString(R.string.search_error_emptyQuery)
-                            )
-                        )
+
                         activity?.findViewById<RecyclerView>(R.id.search_searchResults_recyclerView)
                             ?.apply {
                                 adapter?.notifyDataSetChanged()
@@ -93,7 +82,13 @@ class SearchFragment : Fragment(), Calculations, JSONObjectParser, SearchWrapper
                             }
                     } else {
                         if (newText != null) {
-                            performSearchQuery(newText)
+                            Thread {
+                                searchText = newText
+                                Thread.sleep(searchDelay)
+                                if (newText == searchText) {
+                                    performSearchQuery(newText)
+                                }
+                            }.start()
                         }
                     }
                     return true
@@ -130,6 +125,7 @@ class SearchFragment : Fragment(), Calculations, JSONObjectParser, SearchWrapper
      */
     private fun produceError(message: String, error: Throwable) {
         Log.d(TAG, message, error)
+        activity?.findViewById<ProgressBar>(R.id.search_progressBar_progressBar)?.hide()
         searchResults.add(
             SearchResultData(
                 null, "", "", 0.00, 0.00, 0.00,
@@ -149,6 +145,7 @@ class SearchFragment : Fragment(), Calculations, JSONObjectParser, SearchWrapper
                 items?.forEach { item ->
                     if (item?.symbol != null && item.typeDisp != null && item.name != null && item.typeDisp in Defaults.searchQuoteTypeFilters) {
                         queue?.addToRequestQueue(APIWrapper(item.symbol, ValidIntervals.Spark.ONE_DAY).spark({ sparkResponse ->
+                            activity?.findViewById<ProgressBar>(R.id.search_progressBar_progressBar)?.hide()
                             sparkResponse.parseSparkResponse()?.historicalData?.meta?.apply {
                                 if (regularMarketPrice != null && chartPreviousClose != null) {
                                     val change = calculateChange(regularMarketPrice, chartPreviousClose)!!
@@ -162,17 +159,17 @@ class SearchFragment : Fragment(), Calculations, JSONObjectParser, SearchWrapper
                                 }
                             }
                         }, { error ->
-                            produceError(getString(R.string.default_error_server), error)
+                            produceError(getString(R.string.Static_ServerError), error)
                         }))
                     }
                 }
                 if (items?.size == 0) {
-                    val errorMessage = getString(R.string.search_error_noResults)
+                    val errorMessage = getString(R.string.Static_NoResultsFoundError)
                     produceError(errorMessage, Error(errorMessage))
                 }
 
             }, { error ->
-                produceError(getString(R.string.default_error_connection), error)
+                produceError(getString(R.string.Static_ConnectionError), error)
             })
         )
 

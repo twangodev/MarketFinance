@@ -1,4 +1,4 @@
-package com.marketfinance.app.utils.network.parser.responses
+package com.marketfinance.app.utils.network.responses
 
 data class AssetProfile(
     val city: String?,

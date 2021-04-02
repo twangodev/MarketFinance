@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.marketfinance.app.R
-import com.marketfinance.app.utils.network.JSONObjectWrapper.Companion.getElement
 import com.marketfinance.app.utils.network.RequestSingleton
+import com.marketfinance.app.utils.network.wrappers.JSONObjectWrapper.Companion.getElement
 import com.marketfinance.app.utils.security.EncryptedPreference
 
 class SplashActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.marketfinance.app.utils
+package com.marketfinance.app.utils.interfaces
 
 import android.content.Context
 import android.graphics.Typeface
@@ -11,6 +11,7 @@ import android.view.animation.Transformation
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import com.marketfinance.app.R
+import com.marketfinance.app.utils.Defaults
 import com.robinhood.ticker.TickerUtils
 import com.robinhood.ticker.TickerView
 import java.math.BigDecimal

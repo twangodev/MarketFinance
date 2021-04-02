@@ -1,13 +1,13 @@
 package com.marketfinance.app.utils.network.parser.extensions
 
-import com.marketfinance.app.utils.network.JSONArrayWrapper.Companion.toList
-import com.marketfinance.app.utils.network.JSONObjectWrapper.Companion.first
-import com.marketfinance.app.utils.network.JSONObjectWrapper.Companion.getElement
-import com.marketfinance.app.utils.network.parser.responses.SparkResponse
-import com.marketfinance.app.utils.network.parser.responses.historical.HistoricalData
-import com.marketfinance.app.utils.network.parser.responses.historical.Indicators
-import com.marketfinance.app.utils.network.parser.responses.historical.Meta
-import com.marketfinance.app.utils.network.parser.responses.historical.Quote
+import com.marketfinance.app.utils.network.responses.SparkResponse
+import com.marketfinance.app.utils.network.responses.historical.HistoricalData
+import com.marketfinance.app.utils.network.responses.historical.Indicators
+import com.marketfinance.app.utils.network.responses.historical.Meta
+import com.marketfinance.app.utils.network.responses.historical.Quote
+import com.marketfinance.app.utils.network.wrappers.JSONArrayWrapper.Companion.toList
+import com.marketfinance.app.utils.network.wrappers.JSONObjectWrapper.Companion.first
+import com.marketfinance.app.utils.network.wrappers.JSONObjectWrapper.Companion.getElement
 import org.json.JSONArray
 import org.json.JSONObject
 

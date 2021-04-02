@@ -16,8 +16,8 @@ import com.marketfinance.app.R
 import com.marketfinance.app.ui.fragments.advancedStockFragment.AdvancedStockFragment
 import com.marketfinance.app.ui.fragments.advancedStockFragment.data.AdvancedStockIntentData
 import com.marketfinance.app.utils.Defaults
-import com.marketfinance.app.utils.FragmentTransactions
-import com.marketfinance.app.utils.MarketInterface
+import com.marketfinance.app.utils.interfaces.FragmentTransactions
+import com.marketfinance.app.utils.interfaces.MarketInterface
 import com.robinhood.ticker.TickerView
 import kotlin.math.abs
 
@@ -51,13 +51,13 @@ class SearchRecyclerViewAdapter(
         activity?.resources?.apply {
             initializeTicker(
                 view.findViewById(R.id.searchResults_price_tickerView),
-                getString(R.string.default_price),
+                getString(R.string.Placeholder_Price),
                 getFont(R.font.roboto_condensed),
                 Defaults.tickerDefaultAnimation
             )
             initializeTicker(
                 view.findViewById(R.id.searchResults_change_tickerView),
-                getString(R.string.default_change),
+                getString(R.string.Placeholder_Change),
                 getFont(R.font.roboto_condensed),
                 Defaults.tickerDefaultAnimation
             )

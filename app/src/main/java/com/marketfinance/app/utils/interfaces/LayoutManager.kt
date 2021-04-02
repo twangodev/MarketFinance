@@ -1,4 +1,4 @@
-package com.marketfinance.app.utils
+package com.marketfinance.app.utils.interfaces
 
 import android.view.View
 

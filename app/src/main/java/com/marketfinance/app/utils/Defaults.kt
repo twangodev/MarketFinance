@@ -29,15 +29,6 @@ object Defaults {
         WatchListData("^RUT", "Russell 2000", "Index", 0.00, 0.00)
     )
 
-
-    object SearchQuoteTypes {
-
-        const val EQUITY = "Equity"
-        const val INDEX = "Index"
-        const val CRYPTOCURRENCY = "CRYPTOCURRENCY"
-
-    }
-
     val searchQuoteTypeFilters = listOf(
         "Equity",
         "Index",

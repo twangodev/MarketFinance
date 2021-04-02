@@ -15,12 +15,12 @@ import com.marketfinance.app.R
 import com.marketfinance.app.ui.fragments.advancedStockFragment.ValidIntervals
 import com.marketfinance.app.ui.fragments.advancedStockFragment.data.AdvancedStockIntentData
 import com.marketfinance.app.ui.fragments.transactions.market.MarketOrderPurchaseFragment
-import com.marketfinance.app.utils.Calculations
 import com.marketfinance.app.utils.Defaults
-import com.marketfinance.app.utils.FragmentTransactions
-import com.marketfinance.app.utils.MarketInterface
-import com.marketfinance.app.utils.network.APIWrapper
+import com.marketfinance.app.utils.interfaces.Calculations
+import com.marketfinance.app.utils.interfaces.FragmentTransactions
+import com.marketfinance.app.utils.interfaces.MarketInterface
 import com.marketfinance.app.utils.network.RequestSingleton
+import com.marketfinance.app.utils.network.wrappers.APIWrapper
 import com.marketfinance.app.utils.threads.ThreadManager
 
 class PurchaseFragment : Fragment(), Calculations, FragmentTransactions, MarketInterface {
@@ -59,7 +59,7 @@ class PurchaseFragment : Fragment(), Calculations, FragmentTransactions, MarketI
 
             initializeTicker(
                 findViewById(R.id.purchase_header_details_tickerView),
-                getString(R.string.purchase_header_details),
+                getString(R.string.Placeholder_SymbolPrice),
                 resources.getFont(R.font.roboto_condensed),
                 Defaults.tickerDefaultAnimation
             )
@@ -70,7 +70,9 @@ class PurchaseFragment : Fragment(), Calculations, FragmentTransactions, MarketI
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    override fun onActivityCreated(
+        savedInstanceState: Bundle?
+    ) {
         super.onActivityCreated(savedInstanceState)
 
         activity?.findViewById<ImageView>(R.id.purchase_header_back_imageView)

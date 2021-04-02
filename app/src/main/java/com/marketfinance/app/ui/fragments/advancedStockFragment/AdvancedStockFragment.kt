@@ -33,13 +33,14 @@ import com.marketfinance.app.ui.fragments.advancedStockFragment.data.AnalystData
 import com.marketfinance.app.ui.fragments.advancedStockFragment.data.NewsResponseData
 import com.marketfinance.app.ui.fragments.advancedStockFragment.data.SparkViewData
 import com.marketfinance.app.ui.fragments.transactions.PurchaseFragment
-import com.marketfinance.app.utils.*
-import com.marketfinance.app.utils.network.APIWrapper
-import com.marketfinance.app.utils.network.JSONArrayWrapper.Companion.toList
-import com.marketfinance.app.utils.network.JSONObjectWrapper.Companion.getElement
+import com.marketfinance.app.utils.Defaults
+import com.marketfinance.app.utils.interfaces.*
 import com.marketfinance.app.utils.network.RequestSingleton
 import com.marketfinance.app.utils.network.parser.JSONObjectParser
-import com.marketfinance.app.utils.network.parser.responses.historical.Quote
+import com.marketfinance.app.utils.network.responses.historical.Quote
+import com.marketfinance.app.utils.network.wrappers.APIWrapper
+import com.marketfinance.app.utils.network.wrappers.JSONArrayWrapper.Companion.toList
+import com.marketfinance.app.utils.network.wrappers.JSONObjectWrapper.Companion.getElement
 import com.marketfinance.app.utils.threads.ThreadManager
 import com.robinhood.spark.SparkView
 import com.robinhood.spark.animation.LineSparkAnimator
@@ -298,7 +299,7 @@ class AdvancedStockFragment : Calculations, Fragment(), FragmentTransactions, Ma
             for (id in AdvancedStockLayoutIDs.directTextColorChangeTickerViews) {
                 initializeTicker(
                     findViewById(id),
-                    getString(R.string.default_price),
+                    getString(R.string.Placeholder_Price),
                     resources.getFont(R.font.roboto_condensed),
                     Defaults.tickerDefaultAnimation
                 )
@@ -307,7 +308,7 @@ class AdvancedStockFragment : Calculations, Fragment(), FragmentTransactions, Ma
             for (id in AdvancedStockLayoutIDs.bidAskTickerViews) {
                 initializeTicker(
                     findViewById(id),
-                    getString(R.string.default_bidAsk),
+                    getString(R.string.Placeholder_BidAsk),
                     resources.getFont(R.font.roboto_condensed),
                     Defaults.tickerDefaultAnimation
                 )
@@ -315,13 +316,13 @@ class AdvancedStockFragment : Calculations, Fragment(), FragmentTransactions, Ma
 
 
             findViewById<TickerView>(R.id.advancedStockFragment_change_tickerView).text =
-                getString(R.string.default_change)
+                getString(R.string.Placeholder_Change)
             findViewById<TickerView>(R.id.advancedStockFragment_quickStatistics_volume_tickerView).text =
-                getString(R.string.default_double)
+                getString(R.string.Placeholder_Double)
             findViewById<TickerView>(R.id.advancedStockFragment_trade_statistics_units_tickerView).text =
-                getString(R.string.default_double)
+                getString(R.string.Placeholder_Double)
             findViewById<TickerView>(R.id.advancedStockFragment_trade_statistics_portfolioMakeup_tickerView).text =
-                getString(R.string.default_percentage)
+                getString(R.string.Placeholder_DoublePercentage)
         }
 
         // Final Initialization
@@ -601,9 +602,9 @@ class AdvancedStockFragment : Calculations, Fragment(), FragmentTransactions, Ma
                 val totalRatings = buySum?.let { sellSum?.plus(it) } ?: sellSum
 
                 val analystData = mapOf(
-                    getString(R.string.default_buy) to totalRatings?.let { ntr -> (buySum?.times(100))?.div(ntr)?.let { AnalystData(buySum, it) } },
-                    getString(R.string.advancedStock_analystRatings_hold) to totalRatings?.let { ntr -> (hold?.times(100))?.div(ntr)?.let { AnalystData(hold, it) } },
-                    getString(R.string.default_sell) to totalRatings?.let { ntr -> (sellSum?.times(100))?.div(ntr)?.let { AnalystData(sellSum, it) } }
+                    getString(R.string.Static_Buy) to totalRatings?.let { ntr -> (buySum?.times(100))?.div(ntr)?.let { AnalystData(buySum, it) } },
+                    getString(R.string.Static_Hold) to totalRatings?.let { ntr -> (hold?.times(100))?.div(ntr)?.let { AnalystData(hold, it) } },
+                    getString(R.string.Static_Sell) to totalRatings?.let { ntr -> (sellSum?.times(100))?.div(ntr)?.let { AnalystData(sellSum, it) } }
                 )
 
                 analystData.onEachIndexed { index, entry ->
